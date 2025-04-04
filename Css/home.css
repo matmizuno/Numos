@@ -43,10 +43,10 @@
       align-items: center;
 
       #logo{
-        width: 50px;
+        width: 3rem;
       }
-      h2{
-        font-size: 20px;
+      p{
+        font-size: 1.2rem;
         margin-left: 10px;
         color: #141414;
       }
@@ -63,8 +63,8 @@
 
   }
   #ButtonAcount{
-    height: 32px;
-    width: 100px;
+    height: 2.3rem;
+    width: 6rem;
     border-radius: 10px;
     border: 0px;
     background-color: var(--cor-button-menu);
@@ -78,6 +78,7 @@
     margin-right: 30px;
     text-decoration: none;
     color: #141414;
+    font-size: 1rem;
   }
 
   .homePage{
@@ -93,8 +94,8 @@
         width: 100%;
         height: 100%;
         display: flex;
-        h2{
-          font-size: 30px;
+        #desc1{
+          font-size: 2.3rem;
           color: #141414;
         }
         flex-direction: column;
@@ -102,6 +103,7 @@
         justify-content: center;
         #descricao2{
           margin-top: 2rem;
+          font-size: 1rem;
           color: #383838;
         }
       }
@@ -113,15 +115,15 @@
       align-items: center;
       justify-content: right;
       #homeImg{
-        width: 350px;
+        width:22rem;
       }
     }
 
   }
  
  #start{
-  height: 45px;
-  width: 140px;
+  height: 3rem;
+  width: 8rem;
   border-radius: 10px;
   border: 0px;
   background-color: var(--cor-button-start);
