@@ -5,12 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="Css/home.css">
     <link rel="icon" href="components/img/logo-menu.png"> 
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <title>NuMos</title>
 </head>
 <body>
 
     <div class="main">
-    <div class="nav">
+    <div class="nav" >
 
         <div class="logo">
             <a href=""><img src="components/img/logo-menu.png" alt="Logo-Numos" id="logo"></a>
@@ -29,7 +31,7 @@
 
 
         <div class="descricao">
-            <div class="txtDescricao">
+            <div class="txtDescricao" data-aos="fade-up">
                 <h2><span>1. </span>Organize sua vida Financeira com toda praticidade e Facilidade que a NuMos oferece</h2>
                 <p id="descricao2">Organize seu dinheiro em tempo real em uma solução completa, prática e segura. Tenha o controle financeiro como você sempre quis</p>
 
@@ -44,7 +46,7 @@
 
 
 
-        <div class="imgHome">
+        <div class="imgHome" data-aos="fade-left">
             <img src="components/img/img-home.png" alt="" id="homeImg">
         </div>
     </div>
@@ -52,6 +54,8 @@
     
 
     </div>
-    
+    <script>
+        AOS.init();
+      </script>
 </body>
 </html>

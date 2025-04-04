@@ -7,6 +7,8 @@
   body{
     margin: 0px;
     padding: 0px;
+    font-family: Arial, Helvetica, sans-serif;
+
   }
 
   span{
@@ -46,6 +48,7 @@
       h2{
         font-size: 20px;
         margin-left: 10px;
+        color: #141414;
       }
     }
     .links{
@@ -74,7 +77,7 @@
   .buttonLogin{
     margin-right: 30px;
     text-decoration: none;
-    color: #0f0f0f;
+    color: #141414;
   }
 
   .homePage{
@@ -92,6 +95,7 @@
         display: flex;
         h2{
           font-size: 30px;
+          color: #141414;
         }
         flex-direction: column;
   
@@ -129,3 +133,4 @@
   background-color: #4792e7;
   cursor: pointer;
  }
+
