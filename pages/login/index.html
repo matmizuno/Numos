@@ -3,16 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="createConut.css">
+    <link rel="stylesheet" href="login.css">
+    <link rel="icon" href="/components/img/img-home.png"> 
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-    <title>Criar conta Numos</title>
+    <title>Login conta Numos</title>
 </head>
 <body>
     <div class="main">
         <div class="formDiv" data-aos="fade-right">
             <form action="" class="form">
-                <p id="TitleLogin">Faça o seu login</p>
+                <p id="TitleLogin">Login</p>
                 <div class="flex-colum">
                     <label for="">Email</label>
                     <input type="email" placeholder="Seu email">
@@ -21,13 +22,16 @@
                     <label for="">Senha</label>
                     <input type="password" placeholder="sua senha">
                 </div>
-                <div class="passlost">
-                    <a id="criarConta" href="">Esqueceu a senha?</a>
+                <div class="flex-row">
+                    <input type="checkbox" placeholder="" id="check">
+                    <p>Manter senha salva?</p>
                 </div>
                 <div class="buttonLogin">
                     <button>Entrar</button>
                 </div>
-               
+               <div class="createAcount">
+                <a href="">Não possuí uma conta Numos? <span>Criar conta</span></a>
+               </div>
 
             </form>
         </div>

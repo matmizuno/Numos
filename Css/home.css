@@ -135,4 +135,6 @@
   background-color: #4792e7;
   cursor: pointer;
  }
-
+ @media (max-width: 900px){
+  
+ }
