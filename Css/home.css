@@ -115,7 +115,7 @@
       align-items: center;
       justify-content: right;
       #homeImg{
-        width:28rem;
+        width:87%;
       }
     }
 
@@ -136,6 +136,6 @@
   background-color: #4792e7;
   cursor: pointer;
  }
- @media (max-width: 900px){
-  
+ @media (max-width: 1367px){
+ 
  }
