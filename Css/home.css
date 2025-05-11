@@ -136,6 +136,54 @@
   background-color: #4792e7;
   cursor: pointer;
  }
+
+
+ .section2{
+  width: 100%;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+  align-items: center;
+  
+ }
+
+ .finance{
+  margin-top: 3rem;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 10rem;
+ 
+  .txtFinance{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 65%;
+
+    .desc{
+      flex-direction: column;
+      align-items: center;
+      width: 100%;
+      p{
+        margin-top: 1rem;
+        font-size: 1rem;
+        color: #383838;
+      }
+    }
+    
+  }
+ }
+ 
+
+ footer{
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+align-items: center;
+ }
  @media (max-width: 1367px){
  
  }
