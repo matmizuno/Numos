@@ -27,7 +27,7 @@
         </div>
 
         <div class="createAcount">
-          <a href="/pages/Login/">Já tem uma conta? <span>Entrar</span></a>
+          <a href="/pages/LoginUser/">Já tem uma conta? <span>Entrar</span></a>
         </div>
       </form>
     </div>
@@ -55,7 +55,7 @@
       firebase.auth().createUserWithEmailAndPassword(email, password)
         .then(() => {
           alert("Conta criada com sucesso! Redirecionando para o login...");
-          window.location.href = "/pages/Login/"
+          window.location.href = "/pages/LoginUser/"
         })
         .catch(error => {
           console.error('Erro ao registrar:', error);
