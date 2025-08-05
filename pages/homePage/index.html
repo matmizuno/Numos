@@ -1,95 +1,73 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="homeappPage.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="homeappPage.css" />
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
   <title>Document</title>
 </head>
 <body>
   <div class="main">
-    <div class="side-bar">
-      <div class="title">numos</div>
+    <div class="side-bar" data-aos="fade-right" data-aos-duration="700">
+      <div class="title"><a href="index.html">numos</a></div>
       <div class="links">
         <a href="#">Geral</a>
-        <a href="#">Minhas metas</a>
-        <a href="#">fale conosco</a>
+        <a href="#">Meus gastos</a>
+        <a href="#">Fale conosco</a>
       </div>
-      <div class="logout">
+      <div class="logoutt">
         <button class="logout" type="button" onclick="logout()">
           <span>Sair</span>
         </button>
-        
-        </a>
       </div>
     </div>
-  </side-bar>
-   <div class="content">
-        <div class="receita-e-despesas">
-          <div class="receita">
-            <div class="desc">
-               <h2>Receita</h2>
-            <p>R$ 0,00</p>
-            </div>
-           
-            <div class="btns">
-              <div class="btndiv">
 
-              </div>
-              <div class="btnButton">
-<button>Adicionar receita</button>
-              </div>
-              
+    <div class="content" >
+      <div class="receita-e-despesas" >
+        <div class="receita" data-aos="fade-left">
+          <div class="desc" >
+            <h2>Receita</h2>
+            <p>R$ 0,00</p>
+          </div>
+          <div class="btns">
+            <div class="btndiv"></div>
+            <div class="btnButton">
+              <button>Adicionar receita</button>
             </div>
           </div>
-          <div class="despesas">
-            <div class="desc">
-               <h2>Receita</h2>
-            <p>R$ 0,00</p>
-            </div>
-           
-            <div class="btns">
-              <div class="btndiv">
-
-              </div>
-              <div class="btnButton">
-<button>Adicionar receita</button>
-              </div>
-              
-            </div>
-          </div>
-        </div>  
-        
-        <div class="despesasRecentes">
-          <h2>Despesas Recentes</h2>
         </div>
-   </div>
+        <div class="despesas" data-aos="fade-left">
+          <div class="desc">
+            <h2>Despesas</h2>
+            <p>R$ 0,00</p>
+          </div>
+          <div class="btns">
+            <div class="btndiv"></div>
+            <div class="btnButton">
+                 <button onclick="window.location.href='/pages/trasactions/addDespesas/index.html'">Adionar despesas</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="despesasRecentes" data-aos="fade-up" data-aos-duration="700">
+        <h2>Despesas Recentes</h2>
+        <div class="listaDespesas">
+          <ol id="transactions"></ol>
+        </div>
+      </div>
+    </div>
   </div>
 
-   <script src="https://www.gstatic.com/firebasejs/11.10.0/firebase-app-compat.js"></script>
+
+  <!-- Scripts -->
+  <script src="https://www.gstatic.com/firebasejs/11.10.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/11.10.0/firebase-auth-compat.js"></script>
-  <script>
-    const firebaseConfig = {
-      apiKey: "AIzaSyC134vzhcUb0srcsvAt9d2fp0rQseZ2tjs",
-      authDomain: "numosapp-93e61.firebaseapp.com",
-      projectId: "numosapp-93e61",
-      storageBucket: "numosapp-93e61.firebasestorage.app",
-      messagingSenderId: "1087711194543",
-      appId: "1:1087711194543:web:5b00cf83cef5472997d35a"
-    };
-
-    firebase.initializeApp(firebaseConfig);
-
-
-    function logout() {
-      firebase.auth().signOut()
-        .then(() => {
-          window.location.href = '/index.html';
-        })
-        .catch(error => {
-          console.error('Erro ao sair:', error);
-        });
-    }
-    </script>
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore-compat.js"></script>
+  <script src="/firebase-init.js"></script>
+  <script src="/auth-guard.js"></script>
+  <script src="home.js"></script>
 </body>
 </html>

@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Adicionar Despesa</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: #f3f4f6;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .container {
+      background-color: #ffffff;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      width: 90%;
+      max-width: 450px;
+      text-align: center;
+    }
+
+    .container h1 {
+      margin-bottom: 20px;
+      color: #333333;
+    }
+
+    label {
+      display: block;
+      text-align: left;
+      margin-bottom: 6px;
+      font-weight: bold;
+      color: #444;
+    }
+
+    input, select, textarea {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 20px;
+      border: 1px solid #cccccc;
+      border-radius: 8px;
+      font-size: 16px;
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 80px;
+    }
+
+    button {
+      background-color: #e53935;
+      color: white;
+      padding: 12px 20px;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      cursor: pointer;
+      width: 100%;
+      transition: background-color 0.2s ease;
+    }
+
+    button:hover {
+      background-color: #c62828;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h1>Adicionar Despesa</h1>
+
+    <form id="formDespesa">
+      <label for="valor">Valor</label>
+      <input type="number" step="0.01" id="valor" required>
+
+      <label for="currency">Moeda</label>
+      <select id="currency" required>
+        <option value="BRL">Real (BRL)</option>
+        <option value="USD">Dólar (USD)</option>
+        <option value="EUR">Euro (EUR)</option>
+        <option value="GBP">Libra (GBP)</option>
+        <option value="JPY">Iene (JPY)</option>
+      </select>
+
+      <label for="descricao">Descrição</label>
+      <textarea id="descricao" placeholder="Descreva a despesa..." required></textarea>
+
+      <label for="data">Data</label>
+      <input type="date" id="data" required>
+
+      <button type="submit" >Salvar Despesa</button>
+
+      <a href=""></a>
+    </form>
+  </div>
+
+  <script src="https://www.gstatic.com/firebasejs/11.10.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/11.10.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore-compat.js"></script>
+  <script src="/firebase-init.js"></script>
+  <script src="/auth-guard.js"></script>
+  <script src="home.js"></script>
+
+  <script>
+    document.getElementById('formDespesa').addEventListener('submit', function (e) {
+      e.preventDefault();
+
+      const valor = parseFloat(document.getElementById('valor').value);
+      const currency = document.getElementById('currency').value;
+      const descricao = document.getElementById('descricao').value.trim();
+      const data = document.getElementById('data').value;
+
+      if (isNaN(valor) || valor <= 0 || !currency || !descricao || !data) {
+        alert('Preencha todos os campos corretamente.');
+        return;
+      }
+
+      const despesa = {
+        date: data,
+        money: {
+          currency: currency,
+          value: valor
+        },
+        transactiontype: descricao, // usaremos a descrição diretamente
+        type: 'expense',  // Apenas despesas
+        description: descricao,
+        user: {
+          uid: firebase.auth().currentUser?.uid || null
+        }
+      };
+
+      if (!despesa.user.uid) {
+        alert('Usuário não autenticado.');
+        return;
+      }
+
+      firebase.firestore().collection('transactions').add(despesa)
+        .then(() => {
+          alert('Despesa salva com sucesso!');
+          e.target.reset();
+        })
+        .catch((error) => {
+          console.error('Erro ao salvar transação:', error);
+          alert('Erro ao salvar transação. Tente novamente.');
+        });
+    });
+  </script>
+</body>
+</html>

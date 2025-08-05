@@ -31,6 +31,17 @@ flex-direction: row;
         align-items: center;
         width: 100%;
         height: 20%;
+        a{
+            color: white;
+            text-decoration: none;
+           
+            font-size: 1.5rem;
+            transition: color 0.3s;
+
+            &:hover{
+                color: #d1d1d1;
+            }
+        }
        
     }
     .links{
@@ -63,14 +74,19 @@ flex-direction: row;
         }
     }
 
- .logout{
+ .logoutt{
         margin-top: auto;
-        margin-bottom: 20px;
-        a{
+        margin-bottom: 2rem;
+        button{
+            background-color: transparent;
             color: white;
-            text-decoration: none;
-            font-size: 1.2rem;
+            border: none;
+            font-size: 1rem;
+            cursor: pointer;
             transition: color 0.3s;
+            &:hover{
+                color: #d1d1d1;
+            }
         }
       
     }
@@ -102,6 +118,8 @@ flex-direction: row;
     margin: 10px;
     margin-left: 3rem;
     color: white;
+
+    
      h2{
         margin-bottom: 10px;
         font-size: 1.2rem;
@@ -111,8 +129,10 @@ flex-direction: row;
         height: 100%;
         display: flex;
         flex-direction: column;
+        
      
      }
+    
      .btns{
         width: 50%;
         height: 100%;
@@ -207,5 +227,100 @@ flex-direction: row;
   }
 
   .despesasRecentes{
+   
     margin-left: 3rem;
+    margin-top: 2rem;
+    h2{
+        margin-bottom: 10px;
+        font-size: 1.5rem;
+        color: #242323;
+    }
   }
+
+    .listaDespesas{
+        width: 70%;
+        height: 20rem;
+        border-radius: 20px;
+        padding: 20px;
+        
+        overflow-y: auto;
+        ol{
+            list-style: none;
+            padding: 0;
+            margin: 0;
+           
+        }
+
+        .despesa{
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            margin-bottom: 5px;
+            border: 1px solid #727171;
+            border-radius: 5px;
+
+            .descricao{
+                font-size: 1.2rem;
+                color: #333;
+            }
+
+            .valor{
+                font-size: 1.2rem;
+                color: #333;
+            }
+        }
+    }
+
+
+
+     .alerta-boas-vindas {
+      position: fixed;
+      border-radius: 10px;
+      height: 20rem;
+      width: 50rem;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: white;
+      border: 2px solid #ccc;
+      padding: 20px;
+      z-index: 1000;
+      display: flex;
+      flex-direction: column;
+
+      .titleAlert{
+        text-align: center;
+        color: #292929;
+        margin-bottom: 10px;
+      }
+      .descAlert{
+        margin-bottom: 20px;
+        color: #333;
+      }
+      .agradecimentos{
+        text-align: right;
+        color: #292929;
+        margin-top: 10px;
+      }
+
+        .showAlertAgain{
+            display: flex;
+            flex-direction: column;
+            margin-top: 10px;
+            button{
+                width: 100px;
+                height: 30px;
+                background-color: #4573dd;
+                color: white;
+                border: none;
+                border-radius: 5px;
+                cursor: pointer;
+                transition: background-color 0.3s;
+
+                &:hover{
+                    background-color: #4979e9;
+                }
+            }
+        }
+    }
