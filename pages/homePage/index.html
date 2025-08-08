@@ -10,10 +10,10 @@
 <body>
   <div class="main">
     <div class="side-bar" data-aos="fade-right" data-aos-duration="700">
-      <div class="title"><a href="index.html">numos</a></div>
+      <div class="title"><a href="index.html">Numos</a></div>
       <div class="links">
-        <a href="#">Geral</a>
-        <a href="#">Meus gastos</a>
+        <a href="#geralgit a">Geral</a>
+        <a href="#meusGastos">Meus gastos</a>
         <a href="#">Fale conosco</a>
       </div>
       <div class="logoutt">
@@ -23,7 +23,7 @@
       </div>
     </div>
 
-    <div class="content" >
+    <div class="content" id="geral">
       <div class="receita-e-despesas" >
         <div class="receita" data-aos="fade-left">
           <div class="desc" >
@@ -33,7 +33,7 @@
           <div class="btns">
             <div class="btndiv"></div>
             <div class="btnButton">
-              <button>Adicionar receita</button>
+              <button onclick="window.location.href='/pages/trasactions/addSaldo/index.html'">Adicionar receita</button>
             </div>
           </div>
         </div>
@@ -51,17 +51,50 @@
         </div>
       </div>
 
-      <div class="despesasRecentes" data-aos="fade-up" data-aos-duration="700">
+      <div class="despesasRecentes" data-aos="fade-up" data-aos-duration="700" id="meusGastos">
         <h2>Despesas Recentes</h2>
         <div class="listaDespesas">
           <ol id="transactions"></ol>
         </div>
       </div>
+
+      <div class="relatorioMensal">
+
+        <div class="descricaoRelatorioMensal" data-aos="fade-right"> 
+
+          <div class="totalReceitaMensal">
+            <h3>Sua receita</h3>
+            <p id="totalDespesasMesAtual"> R$ 99</p>
+             </div>
+
+
+            <div class="valorGastoDaReceita">
+              <h3>Valor Gasto</h3>
+            <p id="valorMensal">R$ 999</p>
+          </div>
+
+
+         
+          </div>
+
+          <div class="descricaoRelatorioMensal">
+          
+        
+        <div class="graficoMensal" data-aos="fade-left">
+          <p id="graficoMensal">Agosto</p>
+
+          <img src="https://cdn-icons-png.flaticon.com/512/254/254188.png"  width="70%">
+        </div>
+      </div>
+      </div>
+
+
+
+      <div class="relatorioMesPassado"></div>
     </div>
   </div>
 
 
-  <!-- Scripts -->
   <script src="https://www.gstatic.com/firebasejs/11.10.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/11.10.0/firebase-auth-compat.js"></script>
   <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>

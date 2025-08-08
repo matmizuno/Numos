@@ -239,7 +239,7 @@ flex-direction: row;
 
     .listaDespesas{
         width: 70%;
-        height: 20rem;
+        height: 15rem;
         border-radius: 20px;
         padding: 20px;
         
@@ -324,3 +324,61 @@ flex-direction: row;
             }
         }
     }
+
+
+
+    .relatorioMensal{
+        width: 80%;
+        align-items: center;        
+        display: flex;
+        flex-direction: row;
+       margin-top: 1rem;
+        
+
+        .descricaoRelatorioMensal{
+            width: 50%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            margin-left: 3rem;
+                }
+
+                .totalReceitaMensal{
+                    width: 70%;
+                    background-color: #143FA7;
+                    height: 6rem;
+                    margin: 10px;
+                    padding: 10px;
+                    border-radius: 15px;
+                    color: #fff;
+                    
+                }
+                .valorGastoDaReceita{
+                    
+                    
+                     margin: 10px;
+                    padding: 10px;
+                    width: 70%;
+                    height: 6rem;
+                  border: 0.5px solid #2c2c2c;
+                  border-radius: 15px;
+                  
+                }
+
+
+
+    }
+
+    .graficoMensal{
+        display: flex;
+        
+        flex-direction: column;
+        justify-content: center;
+    align-items: center;    
+
+}
+
+
+
+
+
