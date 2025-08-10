@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Lista de Receitas</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f9f9f9;
+            margin: 0;
+            padding: 20px;
+            color: #333;
+        }
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 30px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+        #lista-receitas {
+            list-style: none;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 0;
+        }
+        #lista-receitas li {
+            background: #fff;
+            margin-bottom: 12px;
+            padding: 15px 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 6px rgb(0 0 0 / 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 1.1rem;
+        }
+        #lista-receitas li button {
+            background-color: #e74c3c;
+            color: white;
+            border: none;
+            padding: 8px 14px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: background-color 0.3s ease;
+        }
+        #lista-receitas li button:hover {
+            background-color: #c0392b;
+        }
+    </style>
+</head>
+<body>
+    <h1>Receitas Salvas</h1>
+    <ul id="lista-receitas"></ul>
+
+    <!-- Bibliotecas -->
+    <script src="https://www.gstatic.com/firebasejs/11.10.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore-compat.js"></script>
+
+    <!-- Inicialização do Firebase e seu código personalizado -->
+    <script src="/firebase-init.js"></script>
+
+    <script>
+      // Referência para o Firestore
+      const db = firebase.firestore();
+
+      // Referência para o elemento UL onde serão exibidas as receitas
+      const listaReceitas = document.getElementById('lista-receitas');
+
+      // Função para listar as receitas
+      function listarReceitas() {
+        db.collection('receita').get().then(snapshot => {
+          listaReceitas.innerHTML = ''; // limpa a lista antes de preencher
+          snapshot.forEach(doc => {
+            const receita = doc.data().receita; // pega o objeto receita dentro do doc
+            const li = document.createElement('li');
+            li.textContent = `Origem: ${receita.origemReceita} - Valor: R$ ${receita.valorReceita}`;
+
+            // Botão de excluir
+            const btnExcluir = document.createElement('button');
+            btnExcluir.textContent = 'Excluir';
+            btnExcluir.onclick = () => {
+              if (confirm('Tem certeza que deseja excluir essa receita?')) {
+                db.collection('receita').doc(doc.id).delete()
+                  .then(() => {
+                    alert('Receita excluída com sucesso!');
+                    listarReceitas(); // atualiza a lista após exclusão
+                  })
+                  .catch(error => alert('Erro ao excluir: ' + error.message));
+              }
+            };
+
+            li.appendChild(btnExcluir);
+            listaReceitas.appendChild(li);
+          });
+        }).catch(error => {
+          console.error('Erro ao listar receitas:', error);
+          listaReceitas.innerHTML = '<li>Erro ao carregar receitas.</li>';
+        });
+      }
+
+      // Executa a listagem ao carregar a página
+      listarReceitas();
+    </script>
+</body>
+</html>

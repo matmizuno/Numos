@@ -85,6 +85,15 @@
     </form>
   </div>
 
+  <!-- Firebase SDKs -->
+  <script src="https://www.gstatic.com/firebasejs/11.10.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/11.10.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore-compat.js"></script>
+
+  <!-- Configuração do Firebase -->
+  <script src="/firebase-init.js"></script>
+  <script src="/auth-guard.js"></script>
+
   <script>
     document.getElementById('formReceita').addEventListener('submit', function (e) {
       e.preventDefault();
@@ -97,14 +106,32 @@
         return;
       }
 
-      // Aqui você pode salvar no Firestore ou em outro local
-      console.log('Receita salva:', { valor, origem });
+      // Obtém usuário logado
+      firebase.auth().onAuthStateChanged(user => {
+        if (user) {
+          // Salva no Firestore
+          firebase.firestore().collection('receita').add({
+            receita: {
+              origemReceita: origem,
+              valorReceita: valor
+            },
+            user: {
+              uid: user.uid
+            }
+          })
+          .then(() => {
+            alert('Receita salva com sucesso!');
+            document.getElementById('formReceita').reset();
+          })
+          .catch(error => {
+            console.error('Erro ao salvar receita:', error);
+            alert('Erro ao salvar receita. Veja o console.');
+          });
 
-      // Feedback ao usuário
-      alert('Receita salva com sucesso!');
-
-      // Opcional: limpar formulário
-      this.reset();
+        } else {
+          alert('Usuário não autenticado.');
+        }
+      });
     });
   </script>
 </body>

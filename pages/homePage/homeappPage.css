@@ -1,3 +1,8 @@
+html {
+  scroll-behavior: smooth;
+}
+
+
 body{
     margin: 0;
     padding: 0;
@@ -141,17 +146,20 @@ flex-direction: row;
         flex-direction: column;
         .btndiv{
             height: 50%;
+            display: flex;
         }    
         .btnButton{
             width: 100%;
             display: flex;
-            justify-content: center;
+            height: 100%;
+            flex-direction: column;
             align-items: center;
-            height: 50%;
+            height: 100%;
         }
      }
 
      button{
+      
         width: 60%;
         height: 2.5rem;
         border-radius: 10px;
@@ -161,6 +169,7 @@ flex-direction: row;
         font-size: 1rem;
         cursor: pointer;
         transition: background-color 0.1s;
+        margin: 3px;
 
         &:hover{
            background-color: #4979e9;
@@ -274,56 +283,7 @@ flex-direction: row;
 
 
 
-     .alerta-boas-vindas {
-      position: fixed;
-      border-radius: 10px;
-      height: 20rem;
-      width: 50rem;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      background: white;
-      border: 2px solid #ccc;
-      padding: 20px;
-      z-index: 1000;
-      display: flex;
-      flex-direction: column;
-
-      .titleAlert{
-        text-align: center;
-        color: #292929;
-        margin-bottom: 10px;
-      }
-      .descAlert{
-        margin-bottom: 20px;
-        color: #333;
-      }
-      .agradecimentos{
-        text-align: right;
-        color: #292929;
-        margin-top: 10px;
-      }
-
-        .showAlertAgain{
-            display: flex;
-            flex-direction: column;
-            margin-top: 10px;
-            button{
-                width: 100px;
-                height: 30px;
-                background-color: #4573dd;
-                color: white;
-                border: none;
-                border-radius: 5px;
-                cursor: pointer;
-                transition: background-color 0.3s;
-
-                &:hover{
-                    background-color: #4979e9;
-                }
-            }
-        }
-    }
+     
 
 
 

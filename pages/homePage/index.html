@@ -1,18 +1,18 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="stylesheet" href="homeappPage.css" />
-  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
-  <title>Document</title>
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" />
+  <title>Numos</title>
 </head>
 <body>
   <div class="main">
     <div class="side-bar" data-aos="fade-right" data-aos-duration="700">
       <div class="title"><a href="index.html">Numos</a></div>
       <div class="links">
-        <a href="#geralgit a">Geral</a>
+        <a href="#geral">Geral</a>
         <a href="#meusGastos">Meus gastos</a>
         <a href="#">Fale conosco</a>
       </div>
@@ -28,79 +28,76 @@
         <div class="receita" data-aos="fade-left">
           <div class="desc" >
             <h2>Receita</h2>
-            <p>R$ 0,00</p>
+            <p id="valorReceita">R$ 0,00</p>
           </div>
           <div class="btns">
             <div class="btndiv"></div>
             <div class="btnButton">
-              <button onclick="window.location.href='/pages/trasactions/addSaldo/index.html'">Adicionar receita</button>
+             
+               <button onclick="window.location.href='/pages/trasactions/addSaldo/index.html'">Adicionar receita</button>
+                <button onclick="window.location.href='/pages/trasactions/addSaldo/vizualizarReceita.html'">Vizualizar receitas</button>
             </div>
           </div>
         </div>
         <div class="despesas" data-aos="fade-left">
           <div class="desc">
             <h2>Despesas</h2>
-            <p>R$ 0,00</p>
+            <p id="valorDespesa">R$ 0,00</p>
           </div>
           <div class="btns">
             <div class="btndiv"></div>
             <div class="btnButton">
-                 <button onclick="window.location.href='/pages/trasactions/addDespesas/index.html'">Adionar despesas</button>
+              <button onclick="window.location.href='/pages/trasactions/addDespesas/index.html'">Adicionar despesas</button>
             </div>
           </div>
         </div>
       </div>
 
       <div class="despesasRecentes" data-aos="fade-up" data-aos-duration="700" id="meusGastos">
-        <h2>Despesas Recentes</h2>
+        <a href="/pages/trasactions/addDespesas/despesas.html"><h2>Despesas</h2></a>
+       
         <div class="listaDespesas">
           <ol id="transactions"></ol>
         </div>
       </div>
 
       <div class="relatorioMensal">
-
         <div class="descricaoRelatorioMensal" data-aos="fade-right"> 
-
           <div class="totalReceitaMensal">
             <h3>Sua receita</h3>
-            <p id="totalDespesasMesAtual"> R$ 99</p>
-             </div>
-
-
-            <div class="valorGastoDaReceita">
-              <h3>Valor Gasto</h3>
-            <p id="valorMensal">R$ 999</p>
+            <p id="totalDespesasMesAtual">R$ 0,00</p>
           </div>
 
-
-         
+          <div class="valorGastoDaReceita">
+            <h3>Valor Gasto</h3>
+            <p id="valorMensal">R$ 0,00</p>
           </div>
+        </div>
 
-          <div class="descricaoRelatorioMensal">
-          
-        
-        <div class="graficoMensal" data-aos="fade-left">
-          <p id="graficoMensal">Agosto</p>
-
-          <img src="https://cdn-icons-png.flaticon.com/512/254/254188.png"  width="70%">
+        <div class="descricaoRelatorioMensal">
+          <div class="graficoMensal" data-aos="fade-left" style="height: 300px; max-width: 400px;">
+            <p id="mesAtual">a</p>
+            <canvas id="graficoRosca"></canvas>
+          </div>
         </div>
       </div>
-      </div>
-
-
 
       <div class="relatorioMesPassado"></div>
     </div>
   </div>
 
-
+  <!-- Bibliotecas -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script src="https://www.gstatic.com/firebasejs/11.10.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/11.10.0/firebase-auth-compat.js"></script>
   <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
   <script src="https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore-compat.js"></script>
+
+  <!-- Seu código de inicialização do Firebase (ajuste no seu arquivo firebase-init.js) -->
   <script src="/firebase-init.js"></script>
   <script src="/auth-guard.js"></script>
+
+  <!-- Código JS do gráfico -->
   <script src="home.js"></script>
 </body>
 </html>
