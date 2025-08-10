@@ -1,5 +1,12 @@
 AOS.init();
 
+// Exibe o nome do mês atual no elemento <p id="mesAtual">
+const nomeMeses = [
+  'Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho',
+  'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'
+];
+document.getElementById('mesAtual').textContent = nomeMeses[new Date().getMonth()];
+
 function logout() {
   firebase.auth().signOut()
     .then(() => {
@@ -83,13 +90,19 @@ function addTransaction(transactions) {
 }
 
 function formateDate(dateString) {
-  const [year, month, day] = dateString.split('-').map(Number);
-  const date = new Date(year, month - 1, day);
-  return date.toLocaleDateString('pt-BR', {
-    year: 'numeric',
-    month: '2-digit',
-    day: '2-digit'
-  });
+  // espera 'YYYY-MM-DD' ou outros formatos que o Date aceite
+  const [year, month, day] = ('' + dateString).split('-').map(Number);
+  if (!isNaN(year) && !isNaN(month) && !isNaN(day)) {
+    const date = new Date(year, month - 1, day);
+    return date.toLocaleDateString('pt-BR', {
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit'
+    });
+  }
+  // fallback
+  const d = new Date(dateString);
+  return isNaN(d.getTime()) ? dateString : d.toLocaleDateString('pt-BR');
 }
 
 function deleteTransaction(transactionId) {
@@ -110,6 +123,7 @@ function deleteTransaction(transactionId) {
     });
 }
 
+/* =================== Valores dinâmicos (receita/ despesa atual) =================== */
 firebase.auth().onAuthStateChanged(user => {
   if (user) {
     // Soma de receitas
@@ -139,8 +153,21 @@ firebase.auth().onAuthStateChanged(user => {
         snapshot.forEach(doc => {
           const data = doc.data();
           if (data.money && typeof data.money.value === 'number') {
-            const dataDespesa = new Date(data.date);
-            if (dataDespesa.getMonth() === mesAtual && dataDespesa.getFullYear() === anoAtual) {
+            // tenta interpretar a data com segurança
+            let dataDespesa;
+            const dateField = data.date;
+            if (dateField && typeof dateField === 'object' && typeof dateField.toDate === 'function') {
+              dataDespesa = dateField.toDate();
+            } else if (typeof dateField === 'string' && dateField.indexOf('-') !== -1) {
+              const parts = dateField.split('-').map(Number);
+              dataDespesa = new Date(parts[0], parts[1] - 1, parts[2]);
+            } else {
+              dataDespesa = new Date(dateField);
+            }
+
+            if (!isNaN(dataDespesa.getTime()) &&
+                dataDespesa.getMonth() === mesAtual &&
+                dataDespesa.getFullYear() === anoAtual) {
               totalDespesa += data.money.value;
             }
           }
@@ -156,7 +183,7 @@ firebase.auth().onAuthStateChanged(user => {
   }
 });
 
-// =================== GRÁFICO DE ROSCA ===================
+/* =================== GRÁFICO DE ROSCA (EXISTENTE) =================== */
 firebase.auth().onAuthStateChanged(user => {
   if (!user) return;
 
@@ -189,8 +216,21 @@ firebase.auth().onAuthStateChanged(user => {
       snapshot.forEach(doc => {
         const data = doc.data();
         if (typeof data.money?.value === 'number') {
-          const dataDespesa = new Date(data.date);
-          if (dataDespesa.getMonth() === mesAtual && dataDespesa.getFullYear() === anoAtual) {
+          // interpreta data com segurança
+          let dataDespesa;
+          const dateField = data.date;
+          if (dateField && typeof dateField === 'object' && typeof dateField.toDate === 'function') {
+            dataDespesa = dateField.toDate();
+          } else if (typeof dateField === 'string' && dateField.indexOf('-') !== -1) {
+            const parts = dateField.split('-').map(Number);
+            dataDespesa = new Date(parts[0], parts[1] - 1, parts[2]);
+          } else {
+            dataDespesa = new Date(dateField);
+          }
+
+          if (!isNaN(dataDespesa.getTime()) &&
+              dataDespesa.getMonth() === mesAtual &&
+              dataDespesa.getFullYear() === anoAtual) {
             totalDespesaMes += data.money.value;
           }
         }
@@ -210,8 +250,13 @@ firebase.auth().onAuthStateChanged(user => {
 
       const restante = totalReceitaMes - totalDespesaMes;
 
+      // destrói gráfico anterior se existir (evita sobreposição ao recarregar)
+      if (window.graficoRoscaChart) {
+        try { window.graficoRoscaChart.destroy(); } catch (e) { /* não faz nada */ }
+      }
+
       const ctx = document.getElementById('graficoRosca').getContext('2d');
-      new Chart(ctx, {
+      window.graficoRoscaChart = new Chart(ctx, {
         type: 'doughnut',
         data: {
           labels: ['Despesas', 'Restante da Receita'],
@@ -233,5 +278,138 @@ firebase.auth().onAuthStateChanged(user => {
     })
     .catch(error => {
       console.error('Erro ao gerar gráfico:', error);
+    });
+});
+
+/* =================== NOVO: GRÁFICO DE ROSCA - MÊS PASSADO ===================
+   (gera somente em #graficoRoscaMesPassado, preenche #mesPassado, #receitaMesPassado, #despesaMesPassado)
+   Não altera o gráfico existente.
+*/
+firebase.auth().onAuthStateChanged(user => {
+  if (!user) return;
+
+  const db = firebase.firestore();
+
+  const hoje = new Date();
+  let mesPassado = hoje.getMonth() - 1;
+  let anoMesPassado = hoje.getFullYear();
+  if (mesPassado < 0) {
+    mesPassado = 11;
+    anoMesPassado -= 1;
+  }
+
+  let totalReceitaPassado = 0;
+  let totalDespesaPassado = 0;
+
+  // Busca receitas do mês passado
+  db.collection('receita')
+    .where('user.uid', '==', user.uid)
+    .get()
+    .then(snapshot => {
+      snapshot.forEach(doc => {
+        const data = doc.data();
+
+        // interpreta campo date (suporta string 'YYYY-MM-DD' e Timestamp)
+        let dataReceita;
+        const dateField = data.date;
+        if (dateField && typeof dateField === 'object' && typeof dateField.toDate === 'function') {
+          dataReceita = dateField.toDate();
+        } else if (typeof dateField === 'string' && dateField.indexOf('-') !== -1) {
+          const parts = dateField.split('-').map(Number);
+          dataReceita = new Date(parts[0], parts[1] - 1, parts[2]);
+        } else {
+          dataReceita = new Date(dateField);
+        }
+
+        if (!isNaN(dataReceita.getTime()) &&
+            dataReceita.getMonth() === mesPassado &&
+            dataReceita.getFullYear() === anoMesPassado &&
+            typeof data.receita?.valorReceita === 'number') {
+          totalReceitaPassado += data.receita.valorReceita;
+        }
+      });
+
+      // Buscar despesas do mês passado
+      return db.collection('transactions')
+        .where('user.uid', '==', user.uid)
+        .where('type', '==', 'expense')
+        .get();
+    })
+    .then(snapshot => {
+      snapshot.forEach(doc => {
+        const data = doc.data();
+
+        // interpreta campo date (suporta string 'YYYY-MM-DD' e Timestamp)
+        let dataDespesa;
+        const dateField = data.date;
+        if (dateField && typeof dateField === 'object' && typeof dateField.toDate === 'function') {
+          dataDespesa = dateField.toDate();
+        } else if (typeof dateField === 'string' && dateField.indexOf('-') !== -1) {
+          const parts = dateField.split('-').map(Number);
+          dataDespesa = new Date(parts[0], parts[1] - 1, parts[2]);
+        } else {
+          dataDespesa = new Date(dateField);
+        }
+
+        if (!isNaN(dataDespesa.getTime()) &&
+            dataDespesa.getMonth() === mesPassado &&
+            dataDespesa.getFullYear() === anoMesPassado &&
+            typeof data.money?.value === 'number') {
+          totalDespesaPassado += data.money.value;
+        }
+      });
+
+      // Atualiza os textos com os VALORES REAIS (sem ajustes)
+      document.getElementById('receitaMesPassado').textContent =
+        `R$ ${totalReceitaPassado.toFixed(2).replace('.', ',')}`;
+      document.getElementById('despesaMesPassado').textContent =
+        `R$ ${totalDespesaPassado.toFixed(2).replace('.', ',')}`;
+
+      // Exibe o nome do mês passado
+      document.getElementById('mesPassado').textContent = nomeMeses[mesPassado];
+
+      // Preparar valores para o gráfico:
+      // O gráfico deve mostrar a receita como "todo" (100%) e a despesa ocupando a parte proporcional.
+      // Para evitar problemas com receita = 0, usamos chartReceita >= 1 e ajustamos chartDespesa <= chartReceita.
+      let chartReceita = totalReceitaPassado;
+      let chartDespesa = totalDespesaPassado;
+      if (chartReceita <= 0) chartReceita = 1;
+      if (chartDespesa > chartReceita) chartDespesa = chartReceita;
+      const restante = chartReceita - chartDespesa;
+
+      // destrói gráfico anterior do mês passado se existir
+      if (window.graficoRoscaMesPassadoChart) {
+        try { window.graficoRoscaMesPassadoChart.destroy(); } catch (e) { /* ignore */ }
+      }
+
+      // Cria gráfico no canvas #graficoRoscaMesPassado com tons de azul
+      const canvasEl = document.getElementById('graficoRoscaMesPassado');
+      if (!canvasEl) {
+        console.warn('Canvas #graficoRoscaMesPassado não encontrado no HTML.');
+        return;
+      }
+      const ctx = canvasEl.getContext('2d');
+      window.graficoRoscaMesPassadoChart = new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+          labels: ['Despesas', 'Restante da Receita'],
+          datasets: [{
+            data: [chartDespesa, restante],
+            backgroundColor: ['#3B82F6', '#93C5FD'],
+            borderWidth: 1
+          }]
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            legend: {
+              position: 'bottom'
+            }
+          }
+        }
+      });
+    })
+    .catch(error => {
+      console.error('Erro ao gerar gráfico do mês passado:', error);
     });
 });
