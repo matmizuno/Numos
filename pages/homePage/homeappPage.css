@@ -298,14 +298,7 @@ flex-direction: row;
        margin-top: 1rem;
         
 
-        .descricaoRelatorioMensal{
-            width: 50%;
-            
-            display: flex;
-            flex-direction: column;
-            margin-left: 3rem;
-                }
-
+  
                 .totalReceitaMensal{
                     width: 70%;
                     background-color: #143FA7;
@@ -325,6 +318,10 @@ flex-direction: row;
                     height: 6rem;
                   border: 0.5px solid #2c2c2c;
                   border-radius: 15px;
+
+                  p{
+                    
+                  }
                   
                 }
 
@@ -341,6 +338,13 @@ flex-direction: row;
 
 }
 
+    .descricaoRelatorioMensal{
+    width: 50%;
+        display: flex;
+        flex-direction: column; 
+        justify-content: center;
+        align-items: center;
+                }
 
 
 
@@ -350,8 +354,8 @@ flex-direction: row;
     display: flex;
     flex-direction: row;
     margin-left: 3rem;
-    margin-top: 10rem;
- height: 20rem;
+    margin-top: 5rem;
+
 
    
 
@@ -370,11 +374,12 @@ flex-direction: row;
 
     .descMesPassado{
         width: 50%;
-        height: 100%;
+       
         display: flex;
         flex-direction: column;
         justify-content: center ;
         align-items: center;
+      
         
   
    
@@ -395,8 +400,35 @@ flex-direction: row;
             p,h4{
                 
                 font-size: 1.2rem;
+                
             }
         }
   .receitaMespassado, .despesaMesPassado{
-    margin: 10px;
+    margin: 5px;
+  }
+
+
+  .graficoSemestral{
+    width: 70%;
+    margin-left: 3rem;
+    margin-top: 8rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    h2{
+        margin-bottom: 20px;
+        font-size: 1.5rem;
+        color: #414040;
+    }
+
+    canvas{
+        width: 100%;
+        max-width: 800px;
+        height: 400px;
+    }
+  }
+
+  #mesPassado, #mesAtual{
+      color: #414040;
   }

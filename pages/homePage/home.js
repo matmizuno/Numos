@@ -413,3 +413,99 @@ firebase.auth().onAuthStateChanged(user => {
       console.error('Erro ao gerar gráfico do mês passado:', error);
     });
 });
+
+/* =================== NOVO: GRÁFICO DE BARRAS - ÚLTIMOS 6 MESES =================== */
+firebase.auth().onAuthStateChanged(user => {
+  if (!user) return;
+
+  const db = firebase.firestore();
+  const hoje = new Date();
+  const nomeMesesAbrev = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'];
+
+  // Cria um array com {mes, ano} dos últimos 6 meses (incluindo atual)
+  const mesesUltimos6 = [];
+  for (let i = 0; i < 6; i++) {
+    const d = new Date(hoje.getFullYear(), hoje.getMonth() - i, 1);
+    mesesUltimos6.push({ mes: d.getMonth(), ano: d.getFullYear() });
+  }
+
+  // Objeto para acumular valores por mês/ano
+  const totaisPorMes = {};
+  mesesUltimos6.forEach(({ mes, ano }) => {
+    totaisPorMes[`${ano}-${mes}`] = 0;
+  });
+
+  db.collection('transactions')
+    .where('user.uid', '==', user.uid)
+    .where('type', '==', 'expense')
+    .get()
+    .then(snapshot => {
+      snapshot.forEach(doc => {
+        const data = doc.data();
+
+        let dataDespesa;
+        const dateField = data.date;
+        if (dateField && typeof dateField === 'object' && typeof dateField.toDate === 'function') {
+          dataDespesa = dateField.toDate();
+        } else if (typeof dateField === 'string' && dateField.includes('-')) {
+          const parts = dateField.split('-').map(Number);
+          dataDespesa = new Date(parts[0], parts[1] - 1, parts[2]);
+        } else {
+          dataDespesa = new Date(dateField);
+        }
+
+        if (!isNaN(dataDespesa.getTime())) {
+          const mes = dataDespesa.getMonth();
+          const ano = dataDespesa.getFullYear();
+          const chave = `${ano}-${mes}`;
+
+          if (totaisPorMes.hasOwnProperty(chave) && typeof data.money?.value === 'number') {
+            totaisPorMes[chave] += data.money.value;
+          }
+        }
+      });
+
+      // Prepara dados para o gráfico na ordem do mais antigo para o mais recente
+      const labels = [];
+      const valores = [];
+      for (let i = mesesUltimos6.length - 1; i >= 0; i--) {
+        const { mes, ano } = mesesUltimos6[i];
+        labels.push(`${nomeMesesAbrev[mes]}/${ano}`);
+        valores.push(totaisPorMes[`${ano}-${mes}`]);
+      }
+
+      const ctx = document.getElementById('graficoSemestralCanvas').getContext('2d');
+      new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels,
+          datasets: [{
+            label: 'Despesas (R$)',
+            data: valores,
+            backgroundColor: '#4B9CD3'
+          }]
+        },
+        options: {
+          responsive: true,
+          scales: {
+            y: {
+              beginAtZero: true,
+              ticks: {
+                callback: function (value) {
+                  return 'R$ ' + value.toFixed(2).replace('.', ',');
+                }
+              }
+            }
+          },
+          plugins: {
+            legend: {
+              display: false
+            }
+          }
+        }
+      });
+    })
+    .catch(error => {
+      console.error('Erro ao gerar gráfico semestral:', error);
+    });
+});
