@@ -148,6 +148,21 @@
   
  }
 
- @media (max-width: 1367px){
- 
- }
+ @media (max-width: 600px){
+.main{
+  display: none;
+}
+body{
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+}
+
+@media (min-width: 600px){
+#cell{
+  display: none;
+}
+}
