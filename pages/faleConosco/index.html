@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <title>Formulário de Contato</title>
   <script type="text/javascript" src="https://cdn.emailjs.com/dist/email.min.js"></script>
-  <!-- Font Awesome -->
+  
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
   <style>
@@ -88,7 +88,7 @@
 
     .linksContato ul li {
       margin: 10px 0;
-      position: relative; /* necessário pro dropdown */
+      position: relative; 
     }
 
     .linksContato ul li a {
@@ -108,7 +108,7 @@
       font-size: 18px;
     }
 
-    /* Cores dos botões */
+   
     .instagram { background: #E4405F; }
     .discord { background: #5865F2; }
     .linkedin { background: #0A66C2; }
@@ -118,11 +118,11 @@
       opacity: 0.9;
     }
 
-    /* Menu suspenso (dropdown) */
+   
     .submenu {
       display: none;
       position: absolute;
-      top: 100%; /* abaixo do botão */
+      top: 100%;
       left: 0;
       width: 100%;
       flex-direction: column;
@@ -145,7 +145,7 @@
       border-bottom: none;
     }
 
-    /* Exibir menu ao passar o mouse */
+
     .has-submenu:hover .submenu {
       display: flex;
       animation: fadeIn 0.3s ease-in-out;
@@ -172,16 +172,16 @@
         <li><a href="https://www.instagram.com/numos_oficial/" class="instagram" target="_blank"><i class="fab fa-instagram"></i> Instagram</a></li>
         <li><a href="https://discord.gg/seuServidorAqui" class="discord" target="_blank"><i class="fab fa-discord"></i> Discord</a></li>
         
-        <!-- LinkedIn com menu suspenso -->
+     
        
       </ul>
     </div>
   </form>
 
   <script type="text/javascript">
-    // Inicializa EmailJS
+   
     (function(){
-      emailjs.init("Ra72AU03PfJ41M87n"); // Public Key
+      emailjs.init("Ra72AU03PfJ41M87n");
     })();
 
     document.getElementById("contact-form").addEventListener("submit", function(event) {

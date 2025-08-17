@@ -31,19 +31,19 @@ function login() {
     });
 }
 
-// Verifica se o usuário já está logado
+
 firebase.auth().onAuthStateChanged(user => {
   if (user) {
     window.location.href = '/pages/homePage/';
   }
 });
 
-// Inicializa AOS com segurança (não quebra se AOS não estiver carregado)
+
 if (window.AOS && typeof AOS.init === 'function') {
   AOS.init();
 }
 
-// Validação de campos
+
 function validateFields() {
   const form = document.getElementById('loginForm');
   if (!form) return;
@@ -67,9 +67,9 @@ function validateFields() {
   buttonLogin.disabled = !(allFilled && isEmailValid);
 }
 
-// Garante que os listeners sejam anexados após o DOM carregar
+
 document.addEventListener('DOMContentLoaded', () => {
-  // Evita submit do form recarregar a página
+  
   const form = document.getElementById('loginForm');
   if (form) {
     form.addEventListener('submit', (e) => {
@@ -78,7 +78,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Garante que o botão de recuperação não submeta o form e chama a função
+  
   const recoverBtn = document.getElementById('recuperarSenha');
   if (recoverBtn) {
     recoverBtn.setAttribute('type', 'button');
@@ -88,14 +88,13 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Listeners de validação e estado inicial
   document.querySelectorAll('#loginForm input[type="email"], #loginForm input[type="password"]').forEach(input => {
     input.addEventListener('input', validateFields);
   });
   validateFields();
 });
 
-// Loading
+
 function showLoading() {
   if (window.Swal) {
     Swal.fire({
@@ -116,7 +115,7 @@ function hideLoading() {
   }
 }
 
-// Mensagens de erro
+
 function getErrorMessage(error) {
   switch (error.code) {
     case 'auth/user-not-found':
@@ -133,7 +132,7 @@ function getErrorMessage(error) {
   }
 }
 
-// Recuperação de senha
+
 function recuperarSenha() {
   const emailInput = document.getElementById('emailInput');
   const email = (emailInput ? emailInput.value : '').trim().toLowerCase();
@@ -157,7 +156,7 @@ function recuperarSenha() {
     .then(() => {
       hideLoading();
 
-      // Alerta principal (SweetAlert2)
+     
       if (window.Swal) {
         Swal.fire({
           icon: 'success',
@@ -166,7 +165,7 @@ function recuperarSenha() {
         });
       }
 
-      // Fallback para garantir que o alerta seja exibido
+    
       if (!window.Swal) {
         alert(`E-mail de recuperação enviado para ${email}. Verifique sua caixa de entrada.`);
       }

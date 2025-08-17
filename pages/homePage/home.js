@@ -1,6 +1,5 @@
 AOS.init();
 
-// Exibe o nome do mês atual no elemento <p id="mesAtual">
 const nomeMeses = [
   'Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho',
   'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'
@@ -121,10 +120,10 @@ function deleteTransaction(transactionId) {
     });
 }
 
-/* =================== Valores dinâmicos (receita/ despesa atual) =================== */
+
 firebase.auth().onAuthStateChanged(user => {
   if (user) {
-    // Soma de receitas
+   
     firebase.firestore().collection('receita')
       .where('user.uid', '==', user.uid)
       .onSnapshot(snapshot => {
@@ -139,7 +138,7 @@ firebase.auth().onAuthStateChanged(user => {
           `R$ ${totalReceita.toFixed(2).replace('.', ',')}`;
       });
 
-    // Soma de despesas APENAS do mês atual
+    
     firebase.firestore().collection('transactions')
       .where('user.uid', '==', user.uid)
       .where('type', '==', 'expense')
@@ -180,7 +179,7 @@ firebase.auth().onAuthStateChanged(user => {
   }
 });
 
-/* =================== GRÁFICO DE ROSCA (EXISTENTE) =================== */
+
 firebase.auth().onAuthStateChanged(user => {
   if (!user) return;
 
@@ -274,7 +273,7 @@ firebase.auth().onAuthStateChanged(user => {
     });
 });
 
-/* =================== GRÁFICO DE ROSCA - MÊS PASSADO (AGORA SÓ DESPESAS) =================== */
+
 firebase.auth().onAuthStateChanged(user => {
   if (!user) return;
 
@@ -357,7 +356,7 @@ firebase.auth().onAuthStateChanged(user => {
     });
 });
 
-/* =================== GRÁFICO DE BARRAS - ÚLTIMOS 6 MESES =================== */
+
 firebase.auth().onAuthStateChanged(user => {
   if (!user) return;
 

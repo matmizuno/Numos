@@ -9,7 +9,7 @@
 </head>
 <body>
   <style>
-    /* Container do menu de ajuda */
+    
     .help-container {
       position: fixed;
       bottom: 20px;
@@ -20,7 +20,6 @@
       z-index: 1000;
     }
 
-    /* Botão principal */
     .help {
       width: 40px;
       height: 40px;
@@ -41,7 +40,7 @@
       background-color: #1f4baf;
     }
 
-    /* Links escondidos inicialmente */
+    
     .help-links {
       display: none;
       flex-direction: column;
@@ -66,7 +65,7 @@
       color: #fff;
     }
 
-    /* Mostrar os links quando passar o mouse no container */
+    
     .help-container:hover .help-links {
       display: flex;
     }
@@ -75,7 +74,7 @@
 
   <div class="main">
     
-    <!-- Botão Help com menu -->
+   
     <div class="help-container">
       <div class="help-links">
        
@@ -85,8 +84,7 @@
       </div>
       <button class="help">?</button>
     </div>
-    <!-- Botão Daltonismo -->
-<button class="daltonico-btn" onclick="toggleDaltonico()">👁</button>
+
 
 
     <div class="side-bar" data-aos="fade-right" data-aos-duration="700">
@@ -186,18 +184,18 @@
     </div>
   </div>
 
-  <!-- Bibliotecas -->
+  
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script src="https://www.gstatic.com/firebasejs/11.10.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/11.10.0/firebase-auth-compat.js"></script>
   <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
   <script src="https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore-compat.js"></script>
 
-  <!-- Seu código de inicialização do Firebase -->
+
   <script src="/firebase-init.js"></script>
   <script src="/auth-guard.js"></script>
 
-  <!-- Código JS do gráfico -->
+  
   <script src="home.js"></script>
 </body>
 </html>
