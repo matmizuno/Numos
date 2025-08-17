@@ -90,7 +90,6 @@ function addTransaction(transactions) {
 }
 
 function formateDate(dateString) {
-  // espera 'YYYY-MM-DD' ou outros formatos que o Date aceite
   const [year, month, day] = ('' + dateString).split('-').map(Number);
   if (!isNaN(year) && !isNaN(month) && !isNaN(day)) {
     const date = new Date(year, month - 1, day);
@@ -100,7 +99,6 @@ function formateDate(dateString) {
       day: '2-digit'
     });
   }
-  // fallback
   const d = new Date(dateString);
   return isNaN(d.getTime()) ? dateString : d.toLocaleDateString('pt-BR');
 }
@@ -153,7 +151,6 @@ firebase.auth().onAuthStateChanged(user => {
         snapshot.forEach(doc => {
           const data = doc.data();
           if (data.money && typeof data.money.value === 'number') {
-            // tenta interpretar a data com segurança
             let dataDespesa;
             const dateField = data.date;
             if (dateField && typeof dateField === 'object' && typeof dateField.toDate === 'function') {
@@ -194,7 +191,6 @@ firebase.auth().onAuthStateChanged(user => {
   let totalReceitaMes = 0;
   let totalDespesaMes = 0;
 
-  // Buscar receitas
   db.collection('receita')
     .where('user.uid', '==', user.uid)
     .get()
@@ -206,7 +202,6 @@ firebase.auth().onAuthStateChanged(user => {
         }
       });
 
-      // Buscar despesas
       return db.collection('transactions')
         .where('user.uid', '==', user.uid)
         .where('type', '==', 'expense')
@@ -216,7 +211,6 @@ firebase.auth().onAuthStateChanged(user => {
       snapshot.forEach(doc => {
         const data = doc.data();
         if (typeof data.money?.value === 'number') {
-          // interpreta data com segurança
           let dataDespesa;
           const dateField = data.date;
           if (dateField && typeof dateField === 'object' && typeof dateField.toDate === 'function') {
@@ -237,7 +231,7 @@ firebase.auth().onAuthStateChanged(user => {
       });
 
       if (totalReceitaMes <= 0) {
-        totalReceitaMes = 1;
+        totalReceitaMes = 0;
       }
       if (totalDespesaMes > totalReceitaMes) {
         totalDespesaMes = totalReceitaMes;
@@ -250,9 +244,8 @@ firebase.auth().onAuthStateChanged(user => {
 
       const restante = totalReceitaMes - totalDespesaMes;
 
-      // destrói gráfico anterior se existir (evita sobreposição ao recarregar)
       if (window.graficoRoscaChart) {
-        try { window.graficoRoscaChart.destroy(); } catch (e) { /* não faz nada */ }
+        try { window.graficoRoscaChart.destroy(); } catch (e) { }
       }
 
       const ctx = document.getElementById('graficoRosca').getContext('2d');
@@ -281,10 +274,7 @@ firebase.auth().onAuthStateChanged(user => {
     });
 });
 
-/* =================== NOVO: GRÁFICO DE ROSCA - MÊS PASSADO ===================
-   (gera somente em #graficoRoscaMesPassado, preenche #mesPassado, #receitaMesPassado, #despesaMesPassado)
-   Não altera o gráfico existente.
-*/
+/* =================== GRÁFICO DE ROSCA - MÊS PASSADO (AGORA SÓ DESPESAS) =================== */
 firebase.auth().onAuthStateChanged(user => {
   if (!user) return;
 
@@ -298,48 +288,16 @@ firebase.auth().onAuthStateChanged(user => {
     anoMesPassado -= 1;
   }
 
-  let totalReceitaPassado = 0;
   let totalDespesaPassado = 0;
 
-  // Busca receitas do mês passado
-  db.collection('receita')
+  db.collection('transactions')
     .where('user.uid', '==', user.uid)
+    .where('type', '==', 'expense')
     .get()
     .then(snapshot => {
       snapshot.forEach(doc => {
         const data = doc.data();
 
-        // interpreta campo date (suporta string 'YYYY-MM-DD' e Timestamp)
-        let dataReceita;
-        const dateField = data.date;
-        if (dateField && typeof dateField === 'object' && typeof dateField.toDate === 'function') {
-          dataReceita = dateField.toDate();
-        } else if (typeof dateField === 'string' && dateField.indexOf('-') !== -1) {
-          const parts = dateField.split('-').map(Number);
-          dataReceita = new Date(parts[0], parts[1] - 1, parts[2]);
-        } else {
-          dataReceita = new Date(dateField);
-        }
-
-        if (!isNaN(dataReceita.getTime()) &&
-            dataReceita.getMonth() === mesPassado &&
-            dataReceita.getFullYear() === anoMesPassado &&
-            typeof data.receita?.valorReceita === 'number') {
-          totalReceitaPassado += data.receita.valorReceita;
-        }
-      });
-
-      // Buscar despesas do mês passado
-      return db.collection('transactions')
-        .where('user.uid', '==', user.uid)
-        .where('type', '==', 'expense')
-        .get();
-    })
-    .then(snapshot => {
-      snapshot.forEach(doc => {
-        const data = doc.data();
-
-        // interpreta campo date (suporta string 'YYYY-MM-DD' e Timestamp)
         let dataDespesa;
         const dateField = data.date;
         if (dateField && typeof dateField === 'object' && typeof dateField.toDate === 'function') {
@@ -359,30 +317,15 @@ firebase.auth().onAuthStateChanged(user => {
         }
       });
 
-      // Atualiza os textos com os VALORES REAIS (sem ajustes)
-      document.getElementById('receitaMesPassado').textContent =
-        `R$ ${totalReceitaPassado.toFixed(2).replace('.', ',')}`;
       document.getElementById('despesaMesPassado').textContent =
         `R$ ${totalDespesaPassado.toFixed(2).replace('.', ',')}`;
 
-      // Exibe o nome do mês passado
       document.getElementById('mesPassado').textContent = nomeMeses[mesPassado];
 
-      // Preparar valores para o gráfico:
-      // O gráfico deve mostrar a receita como "todo" (100%) e a despesa ocupando a parte proporcional.
-      // Para evitar problemas com receita = 0, usamos chartReceita >= 1 e ajustamos chartDespesa <= chartReceita.
-      let chartReceita = totalReceitaPassado;
-      let chartDespesa = totalDespesaPassado;
-      if (chartReceita <= 0) chartReceita = 1;
-      if (chartDespesa > chartReceita) chartDespesa = chartReceita;
-      const restante = chartReceita - chartDespesa;
-
-      // destrói gráfico anterior do mês passado se existir
       if (window.graficoRoscaMesPassadoChart) {
-        try { window.graficoRoscaMesPassadoChart.destroy(); } catch (e) { /* ignore */ }
+        try { window.graficoRoscaMesPassadoChart.destroy(); } catch (e) { }
       }
 
-      // Cria gráfico no canvas #graficoRoscaMesPassado com tons de azul
       const canvasEl = document.getElementById('graficoRoscaMesPassado');
       if (!canvasEl) {
         console.warn('Canvas #graficoRoscaMesPassado não encontrado no HTML.');
@@ -392,10 +335,10 @@ firebase.auth().onAuthStateChanged(user => {
       window.graficoRoscaMesPassadoChart = new Chart(ctx, {
         type: 'doughnut',
         data: {
-          labels: ['Despesas', 'Restante da Receita'],
+          labels: ['Despesas'],
           datasets: [{
-            data: [chartDespesa, restante],
-            backgroundColor: ['#3B82F6', '#93C5FD'],
+            data: [totalDespesaPassado],
+            backgroundColor: ['#3B82F6'],
             borderWidth: 1
           }]
         },
@@ -414,7 +357,7 @@ firebase.auth().onAuthStateChanged(user => {
     });
 });
 
-/* =================== NOVO: GRÁFICO DE BARRAS - ÚLTIMOS 6 MESES =================== */
+/* =================== GRÁFICO DE BARRAS - ÚLTIMOS 6 MESES =================== */
 firebase.auth().onAuthStateChanged(user => {
   if (!user) return;
 
@@ -422,14 +365,12 @@ firebase.auth().onAuthStateChanged(user => {
   const hoje = new Date();
   const nomeMesesAbrev = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'];
 
-  // Cria um array com {mes, ano} dos últimos 6 meses (incluindo atual)
   const mesesUltimos6 = [];
   for (let i = 0; i < 6; i++) {
     const d = new Date(hoje.getFullYear(), hoje.getMonth() - i, 1);
     mesesUltimos6.push({ mes: d.getMonth(), ano: d.getFullYear() });
   }
 
-  // Objeto para acumular valores por mês/ano
   const totaisPorMes = {};
   mesesUltimos6.forEach(({ mes, ano }) => {
     totaisPorMes[`${ano}-${mes}`] = 0;
@@ -465,7 +406,6 @@ firebase.auth().onAuthStateChanged(user => {
         }
       });
 
-      // Prepara dados para o gráfico na ordem do mais antigo para o mais recente
       const labels = [];
       const valores = [];
       for (let i = mesesUltimos6.length - 1; i >= 0; i--) {

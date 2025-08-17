@@ -8,14 +8,92 @@
   <title>Numos</title>
 </head>
 <body>
+  <style>
+    /* Container do menu de ajuda */
+    .help-container {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      z-index: 1000;
+    }
+
+    /* Botão principal */
+    .help {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background-color: #143FA7;
+      color: white;
+      border: none;
+      font-size: 24px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0px 4px 6px rgba(0,0,0,0.2);
+      transition: background 0.3s;
+    }
+
+    .help:hover {
+      background-color: #1f4baf;
+    }
+
+    /* Links escondidos inicialmente */
+    .help-links {
+      display: none;
+      flex-direction: column;
+      margin-bottom: 10px;
+      text-align: right;
+    }
+
+    .help-links a {
+      background: #fff;
+      color: #143FA7;
+      padding: 8px 12px;
+      margin: 4px 0;
+      border-radius: 8px;
+      text-decoration: none;
+      font-size: 14px;
+      box-shadow: 0px 2px 5px rgba(0,0,0,0.2);
+      transition: 0.3s;
+    }
+
+    .help-links a:hover {
+      background: #143FA7;
+      color: #fff;
+    }
+
+    /* Mostrar os links quando passar o mouse no container */
+    .help-container:hover .help-links {
+      display: flex;
+    }
+    
+  </style>
 
   <div class="main">
+    
+    <!-- Botão Help com menu -->
+    <div class="help-container">
+      <div class="help-links">
+       
+        
+       
+         <a href="../faleConosco/index.html">Fale Conosco</a>
+      </div>
+      <button class="help">?</button>
+    </div>
+    <!-- Botão Daltonismo -->
+<button class="daltonico-btn" onclick="toggleDaltonico()">👁</button>
+
+
     <div class="side-bar" data-aos="fade-right" data-aos-duration="700">
       <div class="title"><a href="index.html">Numos</a></div>
       <div class="links">
         <a href="#geral">Geral</a>
         <a href="#meusGastos">Meus gastos</a>
-        <a href="#">Fale conosco</a>
       </div>
       <div class="logoutt">
         <button class="logout" type="button" onclick="logout()">
@@ -25,21 +103,21 @@
     </div>
 
     <div class="content" id="geral">
-      <div class="receita-e-despesas" >
+      <div class="receita-e-despesas">
         <div class="receita" data-aos="fade-left">
-          <div class="desc" >
+          <div class="desc">
             <h2>Receita</h2>
             <p id="valorReceita">R$ 0,00</p>
           </div>
           <div class="btns">
             <div class="btndiv"></div>
             <div class="btnButton">
-             
-               <button onclick="window.location.href='/pages/trasactions/addSaldo/index.html'">Adicionar receita</button>
-                <button onclick="window.location.href='/pages/trasactions/addSaldo/vizualizarReceita.html'">Vizualizar receitas</button>
+              <button onclick="window.location.href='/pages/trasactions/addSaldo/index.html'">Adicionar receita</button>
+              <button onclick="window.location.href='/pages/trasactions/addSaldo/vizualizarReceita.html'">Vizualizar receitas</button>
             </div>
           </div>
         </div>
+        
         <div class="despesas" data-aos="fade-left">
           <div class="desc">
             <h2>Despesas</h2>
@@ -56,19 +134,23 @@
 
       <div class="despesasRecentes" data-aos="fade-up" data-aos-duration="700" id="meusGastos">
         <a href="/pages/trasactions/addDespesas/despesas.html"><h2>Despesas</h2></a>
-       
         <div class="listaDespesas">
           <ol id="transactions"></ol>
         </div>
       </div>
 
+      <div class="titlegastos">
+        <h3>Seus gastos</h3>
+      </div>
+
       <div class="relatorioMensal">
+       
         <div class="descricaoRelatorioMensal" data-aos="fade-right"> 
+           
           <div class="totalReceitaMensal">
             <h3>Sua receita</h3>
             <p id="totalDespesasMesAtual">R$ 0,00</p>
           </div>
-
           <div class="valorGastoDaReceita">
             <h3>Valor Gasto</h3>
             <p id="valorMensal">R$ 0,00</p>
@@ -76,51 +158,31 @@
         </div>
 
         <div class="descricaoRelatorioMensal" style="height: 300px; max-width: 400px;">
-          
-            <p id="mesAtual">a</p>
-            <canvas id="graficoRosca"></canvas>
-         
+          <p id="mesAtual">a</p>
+          <canvas id="graficoRosca"></canvas>
         </div>
       </div>
 
       <div class="relatorioMesPassado">
-        
-          <div class="graficoMesPassado" data-aos="fade-right" style="height: 300px; max-width: 400px;">
-            <p id="mesPassado"></p>
-            <canvas id="graficoRoscaMesPassado"></canvas>
+        <div class="graficoMesPassado" data-aos="fade-right" style="height: 300px; max-width: 400px;">
+          <p id="mesPassado"></p>
+          <canvas id="graficoRoscaMesPassado"></canvas>
+        </div>
+        <div class="descMesPassado"  data-aos="fade-left">
+          <div class="relatorioMesPassadoDescricao">
+
+            <div class="despesaMesPassado">
+              <h3>Valor gasto</h3>
+              <p id="despesaMesPassado"></p>
             </div>
-          
-
-          <div class="descMesPassado"  data-aos="fade-left">
-            <div class="relatorioMesPassadoDescricao">
-              <div class="receitaMespassado">
-                              <h3>Sua receita</h3>
- <p id="receitaMesPassado"></p>
-              </div>
-
-              <div class="despesaMesPassado">
-                 <h3>Valor gasto</h3>
-          <p id="despesaMesPassado"></p>
-
-              </div>
-
-
-            </div>
-
-         
-        
           </div>
-       
-        
+        </div>
       </div>
-
 
       <div class="graficoSemestral" data-aos="fade-up" data-aos-duration="700">
         <h2>Seus gastos dos Últimos 6 Meses</h2>
-    <canvas id="graficoSemestralCanvas"></canvas>
+        <canvas id="graficoSemestralCanvas"></canvas>
       </div>
-
-
     </div>
   </div>
 
@@ -131,7 +193,7 @@
   <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
   <script src="https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore-compat.js"></script>
 
-  <!-- Seu código de inicialização do Firebase (ajuste no seu arquivo firebase-init.js) -->
+  <!-- Seu código de inicialização do Firebase -->
   <script src="/firebase-init.js"></script>
   <script src="/auth-guard.js"></script>
 

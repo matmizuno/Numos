@@ -1,3 +1,5 @@
+
+
 html {
   scroll-behavior: smooth;
 }
@@ -269,7 +271,7 @@ flex-direction: row;
             align-items: center;
             padding: 10px;
             margin-bottom: 5px;
-            border: 1px solid #727171;
+            border: 1px solid #bdbdbd;
             border-radius: 5px;
 
             .descricao{
@@ -432,3 +434,21 @@ flex-direction: row;
   #mesPassado, #mesAtual{
       color: #414040;
   }
+
+
+  .ajuda{
+ text-decoration: none;
+    color: #fff;
+  
+
+    
+}
+
+.titlegastos{
+    margin-left: 4rem;
+    margin-top: 2rem;
+    h3{
+        font-size: 1.5rem;
+      
+    }
+}
