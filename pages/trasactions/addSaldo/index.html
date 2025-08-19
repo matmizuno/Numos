@@ -110,12 +110,12 @@
         return;
       }
 
-      // Obtém usuário logado
+     
       firebase.auth().onAuthStateChanged(user => {
         if (user) {
-          // Salva no Firestore
+          
           firebase.firestore().collection('receita').add({
-            date: data,  // Adiciona o campo date como string no formato YYYY-MM-DD
+            date: data,  
             receita: {
               origemReceita: origem,
               valorReceita: valor

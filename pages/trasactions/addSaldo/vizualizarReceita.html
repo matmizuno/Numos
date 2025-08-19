@@ -1,108 +1,152 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Lista de Receitas</title>
-    <style>
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: #f9f9f9;
-            margin: 0;
-            padding: 20px;
-            color: #333;
-        }
-        h1 {
-            text-align: center;
-            color: #2c3e50;
-            margin-bottom: 30px;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-        }
-        #lista-receitas {
-            list-style: none;
-            max-width: 600px;
-            margin: 0 auto;
-            padding: 0;
-        }
-        #lista-receitas li {
-            background: #fff;
-            margin-bottom: 12px;
-            padding: 15px 20px;
-            border-radius: 8px;
-            box-shadow: 0 2px 6px rgb(0 0 0 / 0.1);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-size: 1.1rem;
-        }
-        #lista-receitas li button {
-            background-color: #e74c3c;
-            color: white;
-            border: none;
-            padding: 8px 14px;
-            border-radius: 5px;
-            cursor: pointer;
-            font-weight: 600;
-            transition: background-color 0.3s ease;
-        }
-        #lista-receitas li button:hover {
-            background-color: #c0392b;
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Lista de Receitas</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #f9f9f9;
+      margin: 0;
+      padding: 20px;
+      color: #333;
+    }
+    h1 {
+      text-align: center;
+      color: #2c3e50;
+      margin-bottom: 30px;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+    }
+    #lista-receitas {
+      list-style: none;
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 0;
+    }
+    #lista-receitas li {
+      background: #fff;
+      margin-bottom: 12px;
+      padding: 15px 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 6px rgb(0 0 0 / 0.1);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 1.1rem;
+    }
+    #lista-receitas li button {
+      background-color: #e74c3c;
+      color: white;
+      border: none;
+      padding: 8px 14px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: background-color 0.3s ease;
+    }
+    #lista-receitas li button:hover {
+      background-color: #c0392b;
+    }
+    .loading {
+      text-align: center;
+      color: #777;
+      font-size: 1.05rem;
+    }
+  </style>
 </head>
 <body>
-    <h1>Receitas Salvas</h1>
-    <ul id="lista-receitas"></ul>
+  <h1>Receitas Salvas</h1>
+  <ul id="lista-receitas">
+    <li class="loading">Carregando receitas...</li>
+  </ul>
 
-    <!-- Bibliotecas -->
-    <script src="https://www.gstatic.com/firebasejs/11.10.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore-compat.js"></script>
+  <!-- Firebase (mesma lógica usada em despesas) -->
+  <script src="https://www.gstatic.com/firebasejs/11.10.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/11.10.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore-compat.js"></script>
 
-    <!-- Inicialização do Firebase e seu código personalizado -->
-    <script src="/firebase-init.js"></script>
+  <!-- Inicialização do Firebase -->
+  <script src="/firebase-init.js"></script>
+  <!-- Opcional, caso você já use em outras páginas -->
+  <script src="/auth-guard.js"></script>
 
-    <script>
-      // Referência para o Firestore
-      const db = firebase.firestore();
+  <script>
+    const db = firebase.firestore();
+    const listaReceitas = document.getElementById('lista-receitas');
 
-      // Referência para o elemento UL onde serão exibidas as receitas
-      const listaReceitas = document.getElementById('lista-receitas');
+    // Formata número para moeda brasileira
+    function moeda(valor) {
+      const n = Number(valor) || 0;
+      return n.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+    }
 
-      // Função para listar as receitas
-      function listarReceitas() {
-        db.collection('receita').get().then(snapshot => {
-          listaReceitas.innerHTML = ''; // limpa a lista antes de preencher
+    // Carrega apenas as receitas do usuário logado (mesma lógica das despesas)
+    function listarReceitas(uid) {
+      db.collection('receita')
+        .where('user.uid', '==', uid)
+        .get()
+        .then(snapshot => {
+          listaReceitas.innerHTML = '';
+
+          if (snapshot.empty) {
+            listaReceitas.innerHTML = '<li class="loading">Nenhuma receita encontrada.</li>';
+            return;
+          }
+
           snapshot.forEach(doc => {
-            const receita = doc.data().receita; // pega o objeto receita dentro do doc
-            const li = document.createElement('li');
-            li.textContent = `Origem: ${receita.origemReceita} - Valor: R$ ${receita.valorReceita}`;
+            const data = doc.data();
 
-            // Botão de excluir
+            // Segurança extra: ignora qualquer doc sem user.uid correspondente
+            if (!data?.user?.uid || data.user.uid !== uid) return;
+
+            const rec = data.receita || {};
+            const origem = rec.origemReceita ?? 'Sem origem';
+            const valor = rec.valorReceita ?? 0;
+
+            const li = document.createElement('li');
+            li.textContent = `Origem: ${origem} - Valor: ${moeda(valor)}`;
+
             const btnExcluir = document.createElement('button');
             btnExcluir.textContent = 'Excluir';
             btnExcluir.onclick = () => {
               if (confirm('Tem certeza que deseja excluir essa receita?')) {
-                db.collection('receita').doc(doc.id).delete()
-                  .then(() => {
-                    alert('Receita excluída com sucesso!');
-                    listarReceitas(); // atualiza a lista após exclusão
-                  })
-                  .catch(error => alert('Erro ao excluir: ' + error.message));
+                // Antes de excluir, valida novamente o dono do documento
+                db.collection('receita').doc(doc.id).get().then(snap => {
+                  const d = snap.data();
+                  if (d?.user?.uid !== uid) {
+                    alert('Você não tem permissão para excluir esta receita.');
+                    return;
+                  }
+                  db.collection('receita').doc(doc.id).delete()
+                    .then(() => {
+                      alert('Receita excluída com sucesso!');
+                      listarReceitas(uid);
+                    })
+                    .catch(err => alert('Erro ao excluir: ' + err.message));
+                });
               }
             };
 
             li.appendChild(btnExcluir);
             listaReceitas.appendChild(li);
           });
-        }).catch(error => {
+        })
+        .catch(error => {
           console.error('Erro ao listar receitas:', error);
-          listaReceitas.innerHTML = '<li>Erro ao carregar receitas.</li>';
+          listaReceitas.innerHTML = '<li class="loading">Erro ao carregar receitas.</li>';
         });
-      }
+    }
 
-      // Executa a listagem ao carregar a página
-      listarReceitas();
-    </script>
+    // Mesma lógica do arquivo de despesas: espera autenticar e filtra por user.uid
+    firebase.auth().onAuthStateChanged(user => {
+      if (user && user.uid) {
+        listarReceitas(user.uid);
+      } else {
+        listaReceitas.innerHTML = '<li class="loading">Usuário não autenticado.</li>';
+      }
+    });
+  </script>
 </body>
 </html>

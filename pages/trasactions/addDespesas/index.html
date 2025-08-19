@@ -128,8 +128,8 @@
           currency: currency,
           value: valor
         },
-        transactiontype: descricao, // usaremos a descrição diretamente
-        type: 'expense',  // Apenas despesas
+        transactiontype: descricao,
+        type: 'expense',  
         description: descricao,
         user: {
           uid: firebase.auth().currentUser?.uid || null
