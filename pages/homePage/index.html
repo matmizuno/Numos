@@ -5,26 +5,23 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="stylesheet" href="homeappPage.css" />
   <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" />
+  <!-- Font Awesome para o ícone -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
   <title>Numos</title>
 </head>
 <body>
 
- 
-
   <div class="main">
-    
-
-
-
-
     <div class="side-bar" data-aos="fade-right" data-aos-duration="700">
       <div class="title"><a href="index.html">Numos</a></div>
       <div class="links">
         <a href="#geral">Geral</a>
         <a href="#meusGastos">Meus gastos</a>
+       
       </div>
       <div class="logoutt">
         <button class="logout" type="button" onclick="logout()">
+          <i class="fa-solid fa-right-from-bracket"></i>
           <span>Sair</span>
         </button>
       </div>
@@ -44,7 +41,6 @@
               <button onclick="window.location.href='../trasactions/addSaldo/vizualizarReceita.html'">Vizualizar receitas</button>
             </div>
           </div>
-          <a href=""></a>
         </div>
         
         <div class="despesas" data-aos="fade-left">
@@ -62,7 +58,7 @@
       </div>
 
       <div class="despesasRecentes" data-aos="fade-up" data-aos-duration="700" id="meusGastos">
-        <a href="/pages/trasactions/addDespesas/despesas.html"><h2>Despesas</h2></a>
+        <a href="/pages/trasactions/addDespesas/despesas.html"><h2>Despesas - Clique para vizualizar</h2></a>
         <div class="listaDespesas">
           <ol id="transactions"></ol>
         </div>
@@ -73,9 +69,7 @@
       </div>
 
       <div class="relatorioMensal">
-       
         <div class="descricaoRelatorioMensal" data-aos="fade-right"> 
-           
           <div class="totalReceitaMensal">
             <h3>Sua receita</h3>
             <p id="totalDespesasMesAtual">R$ 0,00</p>
@@ -99,7 +93,6 @@
         </div>
         <div class="descMesPassado"  data-aos="fade-left">
           <div class="relatorioMesPassadoDescricao">
-
             <div class="despesaMesPassado">
               <h3>Valor gasto</h3>
               <p id="despesaMesPassado"></p>
@@ -115,18 +108,13 @@
     </div>
   </div>
 
-  
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script src="https://www.gstatic.com/firebasejs/11.10.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/11.10.0/firebase-auth-compat.js"></script>
   <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
   <script src="https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore-compat.js"></script>
-
-
   <script src="/firebase-init.js"></script>
   <script src="/auth-guard.js"></script>
-
-  
   <script src="home.js"></script>
 </body>
 </html>

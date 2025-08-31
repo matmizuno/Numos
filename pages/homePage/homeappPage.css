@@ -1,12 +1,9 @@
-
-
 html {
   scroll-behavior: smooth;
 }
 a{
     text-decoration: none;
 }
-
 
 body{
     margin: 0;
@@ -16,11 +13,9 @@ body{
 }
 
 .main{
-display: flex;
-width: 100%;
-flex-direction: row;
-
-  
+  display: flex;
+  width: 100%;
+  flex-direction: row;
 }
 .side-bar{
     width: 20%;
@@ -33,91 +28,81 @@ flex-direction: row;
     flex-direction: column;
     align-items: center;
     color: white;
-
-    .title{
-        font-size: 1.5rem;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        width: 100%;
-        height: 20%;
-        a{
-            color: white;
-            text-decoration: none;
-           
-            font-size: 1.5rem;
-            transition: color 0.3s;
-
-            &:hover{
-                color: #d1d1d1;
-            }
-        }
-       
-    }
-    .links{
-        margin-top: 2rem;
-        display: flex;
-        height: 50%;
-  
-        width: 100%;
-        justify-content: center;
-        flex-direction: column;
-        align-items: center;
-
-        a{
-            color: white;
-            border-top-right-radius: 10px;
-            border-bottom-right-radius: 10px;
-            height: 3rem;
-            width: 100%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            text-decoration: none;
-            margin: 10px 0;
-            font-size: 1.2rem;
-            transition: color 0.3s;
-        }
-
-        a:hover{
-            background-color: #3d69cf;
-        }
-    }
-
- .logoutt{
-        margin-top: auto;
-        margin-bottom: 2rem;
-        button{
-            background-color: transparent;
-            color: white;
-            border: none;
-            font-size: 1rem;
-            cursor: pointer;
-            transition: color 0.3s;
-            &:hover{
-                color: #d1d1d1;
-            }
-        }
-      
-    }
-  
-   
+}
+.side-bar .title{
+    font-size: 1.5rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 20%;
+}
+.side-bar .title a{
+    color: white;
+    text-decoration: none;
+    font-size: 1.5rem;
+    transition: color 0.3s;
+}
+.side-bar .title a:hover{
+    color: #d1d1d1;
 }
 
+.side-bar .links{
+    margin-top: 2rem;
+    display: flex;
+    height: 50%;
+    width: 100%;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+}
+.side-bar .links a{
+    color: white;
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+    height: 3rem;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-decoration: none;
+    margin: 10px 0;
+    font-size: 1.2rem;
+    transition: color 0.3s;
+}
+.side-bar .links a:hover{
+    background-color: #3d69cf;
+}
+
+.logoutt{
+    margin-top: auto;
+    margin-bottom: 2rem;
+}
+.logoutt button{
+    background-color: transparent;
+    color: white;
+    border: none;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: color 0.3s;
+    display: flex;
+    align-items: center;
+    gap: 8px; /* espaço entre ícone e texto */
+}
+.logoutt button:hover{
+    color: #d1d1d1;
+}
 
 .content{
     width: 80%;
- margin-left: 20%;
-
+    margin-left: 20%;
+}
 .receita-e-despesas{
     display: flex;
-  flex-direction: column;
-
-}
+    flex-direction: column;
 }
 
-  .receita{
-  
+.receita{
     width: 70%;
     height: 8rem;
     display: flex;
@@ -128,62 +113,52 @@ flex-direction: row;
     margin: 10px;
     margin-left: 3rem;
     color: white;
+}
+.receita h2{
+    margin-bottom: 10px;
+    font-size: 1.2rem;
+}
+.receita .desc{
+    width: 50%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+.receita .btns{
+    width: 50%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+.receita .btns .btndiv{
+    height: 50%;
+    display: flex;
+}
+.receita .btns .btnButton{
+    width: 100%;
+    display: flex;
+    height: 100%;
+    flex-direction: column;
+    align-items: center;
+    height: 100%;
+}
+.receita button{
+    width: 60%;
+    height: 2.5rem;
+    border-radius: 10px;
+    border: none;
+    background-color: #4573dd;
+    color: white;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.1s;
+    margin: 3px;
+}
+.receita button:hover{
+   background-color: #4979e9;
+}
 
-    
-     h2{
-        margin-bottom: 10px;
-        font-size: 1.2rem;
-     }
-     .desc{
-        width: 50%;
-        height: 100%;
-        display: flex;
-        flex-direction: column;
-        
-     
-     }
-    
-     .btns{
-        width: 50%;
-        height: 100%;
-     
-        display: flex;
-        flex-direction: column;
-        .btndiv{
-            height: 50%;
-            display: flex;
-        }    
-        .btnButton{
-            width: 100%;
-            display: flex;
-            height: 100%;
-            flex-direction: column;
-            align-items: center;
-            height: 100%;
-        }
-     }
-
-     button{
-      
-        width: 60%;
-        height: 2.5rem;
-        border-radius: 10px;
-        border: none;
-        background-color: #4573dd;
-        color: white;
-        font-size: 1rem;
-        cursor: pointer;
-        transition: background-color 0.1s;
-        margin: 3px;
-
-        &:hover{
-           background-color: #4979e9;
-        }
-     }
-  }
-
-   .despesas{
-  
+.despesas{
     width: 70%;
     height: 7rem;
     display: flex;
@@ -194,162 +169,126 @@ flex-direction: row;
     margin: 10px;
     margin-left: 3rem;
     color: white;
-     h2{
-        margin-bottom: 10px;
-        font-size: 1.2rem;
-     }
-     .desc{
-        width: 50%;
-        height: 100%;
-        display: flex;
-        flex-direction: column;
-     
-     }
-     .btns{
-        width: 50%;
-        height: 100%;
-     
-        display: flex;
-        flex-direction: column;
-        .btndiv{
-            height: 50%;
-        }    
-        .btnButton{
-            width: 100%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 50%;
-        }
-     }
-
-     button{
-        width: 60%;
-        height: 2.5rem;
-        border-radius: 10px;
-        border: none;
-        background-color: #4573dd;
-        color: white;
-        font-size: 1rem;
-        cursor: pointer;
-        transition: background-color 0.1s;
-
-        &:hover{
-           background-color: #4979e9;
-        }
-     }
-  }
-
-  .despesasRecentes{
-   
-    margin-left: 3rem;
-    margin-top: 2rem;
-    h2{
-        margin-bottom: 10px;
-        font-size: 1.5rem;
-        color: #242323;
-    }
-  }
-
-    .listaDespesas{
-        width: 70%;
-        height: 15rem;
-        border-radius: 20px;
-        padding: 20px;
-        
-        overflow-y: auto;
-        ol{
-            list-style: none;
-            padding: 0;
-            margin: 0;
-           
-        }
-
-        .despesa{
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 10px;
-            margin-bottom: 5px;
-            border: 1px solid #bdbdbd;
-            border-radius: 5px;
-
-            .descricao{
-                font-size: 1.2rem;
-                color: #333;
-            }
-
-            .valor{
-                font-size: 1.2rem;
-                color: #333;
-            }
-        }
-    }
-
-
-
-     
-
-
-
-    .relatorioMensal{
-        width: 80%;
-        align-items: center;        
-        display: flex;
-        flex-direction: row;
-       margin-top: 1rem;
-        
-
-  
-                .totalReceitaMensal{
-                    width: 70%;
-                    background-color: #143FA7;
-                    height: 6rem;
-                    margin: 10px;
-                    padding: 10px;
-                    border-radius: 15px;
-                    color: #fff;
-                    
-                }
-                .valorGastoDaReceita{
-                    
-                    
-                     margin: 10px;
-                    padding: 10px;
-                    width: 70%;
-                    height: 6rem;
-                  border: 0.5px solid #2c2c2c;
-                  border-radius: 15px;
-
-                  p{
-                    
-                  }
-                  
-                }
-
-
-
-    }
-
-    .graficoMensal{
-        display: flex;
-        
-        flex-direction: column;
-        justify-content: center;
-    align-items: center;    
-
+}
+.despesas h2{
+    margin-bottom: 10px;
+    font-size: 1.2rem;
+}
+.despesas .desc{
+    width: 50%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+.despesas .btns{
+    width: 50%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+.despesas .btns .btndiv{
+    height: 50%;
+}
+.despesas .btns .btnButton{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 50%;
+}
+.despesas button{
+    width: 60%;
+    height: 2.5rem;
+    border-radius: 10px;
+    border: none;
+    background-color: #4573dd;
+    color: white;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.1s;
+}
+.despesas button:hover{
+   background-color: #4979e9;
 }
 
-    .descricaoRelatorioMensal{
+.despesasRecentes{
+    margin-left: 3rem;
+    margin-top: 2rem;
+}
+.despesasRecentes h2{
+    margin-bottom: 10px;
+    font-size: 1.5rem;
+    color: #242323;
+}
+.listaDespesas{
+    width: 70%;
+    height: 15rem;
+    border-radius: 20px;
+    padding: 20px;
+    overflow-y: auto;
+}
+.listaDespesas ol{
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+.listaDespesas .despesa{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    margin-bottom: 5px;
+    border: 1px solid #bdbdbd;
+    border-radius: 5px;
+}
+.listaDespesas .despesa .descricao{
+    font-size: 1.2rem;
+    color: #333;
+}
+.listaDespesas .despesa .valor{
+    font-size: 1.2rem;
+    color: #333;
+}
+
+.relatorioMensal{
+    width: 80%;
+    align-items: center;        
+    display: flex;
+    flex-direction: row;
+    margin-top: 1rem;
+}
+.relatorioMensal .totalReceitaMensal{
+    width: 70%;
+    background-color: #143FA7;
+    height: 6rem;
+    margin: 10px;
+    padding: 10px;
+    border-radius: 15px;
+    color: #fff;
+}
+.relatorioMensal .valorGastoDaReceita{
+    margin: 10px;
+    padding: 10px;
+    width: 70%;
+    height: 6rem;
+    border: 0.5px solid #2c2c2c;
+    border-radius: 15px;
+}
+
+.graficoMensal{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;    
+}
+
+.descricaoRelatorioMensal{
     width: 50%;
-        display: flex;
-        flex-direction: column; 
-        justify-content: center;
-        align-items: center;
-                }
-
-
-
+    display: flex;
+    flex-direction: column; 
+    justify-content: center;
+    align-items: center;
+}
 
 .relatorioMesPassado{
     width: 80%;
@@ -357,98 +296,71 @@ flex-direction: row;
     flex-direction: row;
     margin-left: 3rem;
     margin-top: 5rem;
-
-
-   
-
 }
- .graficoMesPassado{
-        width: 50%;
-        display: flex;
-        flex-direction: column; 
-        justify-content: center;
-        align-items: center;
-       
-       
-       
-        
-    }
-
-    .descMesPassado{
-        width: 50%;
-       
-        display: flex;
-        flex-direction: column;
-        justify-content: center ;
-        align-items: center;
-      
-        
-  
-   
-    }
-
-          .relatorioMesPassadoDescricao{
-            width: 60%;
-           
-            display: flex;
-            flex-direction: column;
-            background-color: #143FA7;
-          
-            margin: 10px;
-            padding: 10px;
-            border-radius: 15px;
-            color: #fff;
-
-            p,h4{
-                
-                font-size: 1.2rem;
-                
-            }
-        }
-  .receitaMespassado, .despesaMesPassado{
+.graficoMesPassado{
+    width: 50%;
+    display: flex;
+    flex-direction: column; 
+    justify-content: center;
+    align-items: center;
+}
+.descMesPassado{
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center ;
+    align-items: center;
+}
+.relatorioMesPassadoDescricao{
+    width: 60%;
+    display: flex;
+    flex-direction: column;
+    background-color: #143FA7;
+    margin: 10px;
+    padding: 10px;
+    border-radius: 15px;
+    color: #fff;
+}
+.relatorioMesPassadoDescricao p,
+.relatorioMesPassadoDescricao h4{
+    font-size: 1.2rem;
+}
+.receitaMespassado, .despesaMesPassado{
     margin: 5px;
-  }
+}
 
-
-  .graficoSemestral{
+.graficoSemestral{
     width: 70%;
     margin-left: 3rem;
     margin-top: 8rem;
     display: flex;
     flex-direction: column;
     align-items: center;
+}
+.graficoSemestral h2{
+    margin-bottom: 20px;
+    font-size: 1.5rem;
+    color: #414040;
+}
+.graficoSemestral canvas{
+    width: 100%;
+    max-width: 800px;
+    height: 400px;
+}
 
-    h2{
-        margin-bottom: 20px;
-        font-size: 1.5rem;
-        color: #414040;
-    }
+#mesPassado, #mesAtual{
+    color: #414040;
+}
 
-    canvas{
-        width: 100%;
-        max-width: 800px;
-        height: 400px;
-    }
-  }
-
-  #mesPassado, #mesAtual{
-      color: #414040;
-  }
-
-
-  .ajuda{
- text-decoration: none;
+.ajuda{
+    text-decoration: none;
     color: #fff;
-  
-
-    
 }
 
 .titlegastos{
     margin-left: 4rem;
     margin-top: 2rem;
-    h3{
-        font-size: 1.5rem;
-      
-    }
+}
+.titlegastos h3{
+    font-size: 1.5rem;
 }
