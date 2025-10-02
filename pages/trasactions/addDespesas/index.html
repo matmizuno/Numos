@@ -86,21 +86,27 @@
       <label for="currency">Moeda</label>
       <select id="currency" required>
         <option value="BRL">Real (BRL)</option>
-     
+      </select>
+
+      <label for="categoria">Categoria</label>
+      <select id="categoria" required>
+       
+        <option value="Lazer">Lazer</option>
+        <option value="Mercado">Mercado</option>
+        <option value="Outro">Outro</option>
       </select>
 
       <label for="descricao">Descrição</label>
-      <textarea id="descricao" placeholder="Descreva a despesa..." required></textarea>
+      <textarea id="descricao" placeholder="Descreva a despesa..." disabled></textarea>
 
       <label for="data">Data</label>
       <input type="date" id="data" required>
 
-      <button type="submit" >Salvar Despesa</button>
-
-      <a href=""></a>
+      <button type="submit">Salvar Despesa</button>
     </form>
   </div>
 
+  <!-- Firebase -->
   <script src="https://www.gstatic.com/firebasejs/11.10.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/11.10.0/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore-compat.js"></script>
@@ -109,17 +115,44 @@
   <script src="home.js"></script>
 
   <script>
+    const categoriaSelect = document.getElementById('categoria');
+    const descricaoInput = document.getElementById('descricao');
+
+    // Ativa ou desativa o campo descrição dependendo da categoria
+    categoriaSelect.addEventListener('change', () => {
+      if (categoriaSelect.value === 'Outro') {
+        descricaoInput.disabled = false;
+        descricaoInput.required = true;
+      } else {
+        descricaoInput.disabled = true;
+        descricaoInput.required = false;
+        descricaoInput.value = ''; 
+      }
+    });
+
     document.getElementById('formDespesa').addEventListener('submit', function (e) {
       e.preventDefault();
 
       const valor = parseFloat(document.getElementById('valor').value);
       const currency = document.getElementById('currency').value;
-      const descricao = document.getElementById('descricao').value.trim();
+      const categoria = categoriaSelect.value;
+      const descricao = descricaoInput.value.trim();
       const data = document.getElementById('data').value;
 
-      if (isNaN(valor) || valor <= 0 || !currency || !descricao || !data) {
+      // Validação
+      if (isNaN(valor) || valor <= 0 || !currency || !categoria || !data) {
         alert('Preencha todos os campos corretamente.');
         return;
+      }
+
+      // Se for "Outro", exige descrição manual
+      let descricaoFinal = categoria;
+      if (categoria === 'Outro') {
+        if (!descricao) {
+          alert('Por favor, insira uma descrição para a categoria "Outro".');
+          return;
+        }
+        descricaoFinal = descricao;
       }
 
       const despesa = {
@@ -128,9 +161,9 @@
           currency: currency,
           value: valor
         },
-        transactiontype: descricao,
+        transactiontype: categoria,
         type: 'expense',  
-        description: descricao,
+        description: descricaoFinal,
         user: {
           uid: firebase.auth().currentUser?.uid || null
         }
@@ -145,6 +178,7 @@
         .then(() => {
           alert('Despesa salva com sucesso!');
           e.target.reset();
+          descricaoInput.disabled = true;
         })
         .catch((error) => {
           console.error('Erro ao salvar transação:', error);

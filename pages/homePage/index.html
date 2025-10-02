@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="stylesheet" href="homeappPage.css" />
   <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" />
-  <!-- Font Awesome para o ícone -->
+
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
   <title>Numos</title>
 </head>
@@ -17,7 +17,7 @@
       <div class="links">
         <a href="#geral">Geral</a>
         <a href="#meusGastos">Meus gastos</a>
-       
+      
       </div>
       <div class="logoutt">
         <button class="logout" type="button" onclick="logout()">
@@ -52,20 +52,16 @@
             <div class="btndiv"></div>
             <div class="btnButton">
               <button onclick="window.location.href='/pages/trasactions/addDespesas/index.html'">Adicionar despesas</button>
+              <button onclick="window.location.href='/pages/trasactions/addDespesas/despesas.html'">vizualizar despesas</button>
             </div>
           </div>
         </div>
       </div>
 
-      <div class="despesasRecentes" data-aos="fade-up" data-aos-duration="700" id="meusGastos">
-        <a href="/pages/trasactions/addDespesas/despesas.html"><h2>Despesas - Clique para vizualizar</h2></a>
-        <div class="listaDespesas">
-          <ol id="transactions"></ol>
-        </div>
-      </div>
+
 
       <div class="titlegastos">
-        <h3>Seus gastos</h3>
+        <h3 id="meusGastos">Seus gastos</h3>
       </div>
 
       <div class="relatorioMensal">
