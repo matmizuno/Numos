@@ -143,7 +143,7 @@ body{
     height: 100%;
 }
 .receita button{
-    width: 40%;
+    width: 50%;
     height: 2.5rem;
     border-radius: 10px;
     border: none;
@@ -199,7 +199,7 @@ body{
     height: 100%;
 }
 .despesas button{
-    width: 40%;
+    width: 50%;
     height: 2.5rem;
     border-radius: 10px;
     border: none;

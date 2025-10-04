@@ -123,7 +123,7 @@
     </select>
 
     <button id="btnAplicar">Aplicar Filtros</button>
-    <button id="btnPDF">Baixar relatório das minhas depesas </button>
+    <button id="btnPDF">Baixar relatório das minhas despesas</button>
   </div>
 
   <div id="despesas-container">
@@ -135,7 +135,7 @@
   <script src="https://www.gstatic.com/firebasejs/11.10.0/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore-compat.js"></script>
 
-  <!-- jsPDF (biblioteca para gerar PDF) -->
+  <!-- jsPDF -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
   <!-- Inicialização do Firebase -->
@@ -224,16 +224,9 @@
       const valorMin = parseFloat(document.getElementById('valorMin').value);
       const ordenar = document.getElementById('ordenar').value;
 
-      if (dataInicio) {
-        filtradas = filtradas.filter(tx => tx.date >= dataInicio);
-      }
-      if (dataFim) {
-        filtradas = filtradas.filter(tx => tx.date <= dataFim);
-      }
-
-      if (!isNaN(valorMin)) {
-        filtradas = filtradas.filter(tx => tx.value >= valorMin);
-      }
+      if (dataInicio) filtradas = filtradas.filter(tx => tx.date >= dataInicio);
+      if (dataFim) filtradas = filtradas.filter(tx => tx.date <= dataFim);
+      if (!isNaN(valorMin)) filtradas = filtradas.filter(tx => tx.value >= valorMin);
 
       filtradas.sort((a, b) => {
         if (ordenar === "data-desc") return b.date.localeCompare(a.date);
@@ -245,6 +238,7 @@
       renderizar(filtradas);
     }
 
+    // ===== Função gerarPDF atualizada =====
     function gerarPDF() {
       if (despesasFiltradas.length === 0) {
         alert("Nenhuma despesa para exportar.");
@@ -253,21 +247,70 @@
 
       const { jsPDF } = window.jspdf;
       const doc = new jsPDF();
-      doc.setFontSize(14);
-      doc.text("Relatório de Despesas", 14, 20);
 
-      let y = 30;
-      despesasFiltradas.forEach((tx, index) => {
-        doc.setFontSize(10);
-        doc.text(`${index + 1}. ${tx.description} - ${formatDate(tx.date)} - R$ ${tx.value.toFixed(2)}`, 14, y);
-        y += 8;
-        if (y > 280) { 
-          doc.addPage();
-          y = 20;
-        }
+      // Cabeçalho
+      doc.setFillColor(0, 87, 184);
+      doc.rect(0, 0, 210, 20, "F");
+      doc.setFontSize(16);
+      doc.setTextColor(255, 255, 255);
+      doc.text("Relatório de Despesas - Numos", 14, 13);
+
+      // Corpo
+      doc.setTextColor(0, 0, 0);
+      doc.setFontSize(12);
+
+      const agrupado = {};
+      despesasFiltradas.forEach(tx => {
+        const mes = tx.date.slice(0, 7);
+        if (!agrupado[mes]) agrupado[mes] = [];
+        agrupado[mes].push(tx);
       });
 
-      doc.save("despesas.pdf");
+      let y = 30;
+      let totalGeral = 0;
+
+      for (const mes in agrupado) {
+        const despesasMes = agrupado[mes];
+        const nomeMes = formatMonthYear(mes);
+        let totalMes = 0;
+
+        doc.setFont("helvetica", "bold");
+        doc.text(nomeMes.toUpperCase(), 14, y);
+        y += 8;
+
+        despesasMes.forEach((tx, i) => {
+          totalMes += tx.value;
+          doc.setFont("helvetica", "normal");
+          doc.text(`${i + 1}. ${tx.description}`, 16, y);
+          doc.text(formatDate(tx.date), 120, y);
+
+          doc.text(`R$ ${tx.value.toFixed(2)}`, 180, y, { align: "right" });
+          
+          y += 8;
+          if (y > 270) { doc.addPage(); y = 20; }
+        });
+doc.text(`Total do mês: R$ ${totalMes.toFixed(2)}`, 180, y + 4, { align: "right" });
+        
+       
+
+        totalGeral += totalMes;
+
+        doc.setFont("helvetica", "bold");
+      
+        y += 12;
+
+        if (y > 270) { doc.addPage(); y = 20; }
+      }
+
+      doc.setFontSize(13);
+      doc.setFont("helvetica", "bold");
+     
+
+      doc.setFontSize(10);
+      doc.setTextColor(150);
+      doc.text("Equipe Numos", 105, 290, { align: "center" });
+
+      doc.save("Relatório_Minhas_Despesas.pdf");
     }
 
     firebase.auth().onAuthStateChanged(user => {
@@ -302,79 +345,6 @@
           document.getElementById('despesas-container').innerHTML = "<p class='loading'>Erro ao carregar despesas.</p>";
         });
     });
-    function gerarPDF() {
-  if (despesasFiltradas.length === 0) {
-    alert("Nenhuma despesa para exportar.");
-    return;
-  }
-
-  const { jsPDF } = window.jspdf;
-  const doc = new jsPDF();
-
-  // Cabeçalho
-  doc.setFillColor(0, 87, 184); // azul
-  doc.rect(0, 0, 210, 20, "F");
-  doc.setFontSize(16);
-  doc.setTextColor(255, 255, 255);
-  doc.text("Relatório de Despesas", 14, 13);
-
-  // Reset para corpo
-  doc.setTextColor(0, 0, 0);
-  doc.setFontSize(12);
-
-  let y = 30;
-  let total = 0;
-
-  despesasFiltradas.forEach((tx, index) => {
-    total += tx.value;
-
-    // Número
-    doc.setFont("helvetica", "bold");
-    doc.text(`${index + 1}.`, 14, y);
-
-    // Descrição
-    doc.setFont("helvetica", "normal");
-    doc.text(tx.description, 25, y);
-
-    // Data
-    doc.setTextColor(100);
-    doc.text(formatDate(tx.date), 120, y);
-
-    // Valor
-
-    doc.setFont("helvetica", "bold");
-    doc.text("R$ " + tx.value.toFixed(2), 170, y, { align: "right" });
-
-    // Linha divisória
-    doc.setDrawColor(220);
-    doc.line(14, y + 2, 200, y + 2);
-
-    y += 10;
-
-    // Quebra de página
-    if (y > 270) {
-      doc.addPage();
-      y = 20;
-    }
-  });
-
-  // Resumo no final
-  doc.setFontSize(13);
-  doc.setTextColor(0, 0, 0);
-  doc.text("Resumo:", 14, y + 10);
-
-  doc.setFont("helvetica", "bold");
-  doc.text(`Total de despesas: R$ ${total.toFixed(2)}`, 14, y + 20);
-
-  // Rodapé
-  doc.setFontSize(10);
-  doc.setTextColor(150);
-  doc.text("Gerado automaticamente pelo sistema de controle de despesas", 105, 290, { align: "center" });
-
-  // Salvar PDF
-  doc.save("despesas.pdf");
-}
-
 
     document.getElementById('btnAplicar').addEventListener('click', aplicarFiltros);
     document.getElementById('btnPDF').addEventListener('click', gerarPDF);
