@@ -235,11 +235,19 @@ firebase.auth().onAuthStateChanged(user => {
       if (totalDespesaMes > totalReceitaMes) {
         totalDespesaMes = totalReceitaMes;
       }
+if (totalReceitaMes <= 0) {
+  totalReceitaMes = 0;
+}
 
-      document.getElementById('totalDespesasMesAtual').textContent =
-        `R$ ${totalReceitaMes.toFixed(2).replace('.', ',')}`;
-      document.getElementById('valorMensal').textContent =
-        `R$ ${totalDespesaMes.toFixed(2).replace('.', ',')}`;
+// 🔧 Cálculo correto: saldo = receita - despesas
+const saldoAtual = totalReceitaMes - totalDespesaMes;
+const saldoFinal = saldoAtual < 0 ? 0 : saldoAtual;
+
+document.getElementById('totalDespesasMesAtual').textContent =
+  `R$ ${saldoFinal.toFixed(2).replace('.', ',')}`;
+document.getElementById('valorMensal').textContent =
+  `R$ ${totalDespesaMes.toFixed(2).replace('.', ',')}`;
+
 
       const restante = totalReceitaMes - totalDespesaMes;
 
