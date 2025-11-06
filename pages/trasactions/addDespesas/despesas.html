@@ -224,6 +224,27 @@ h3{
       color: #d32f2f;
     }
 
+    .btn-excluir {
+      background: #d32f2f;
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 0.85rem;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      margin-left: 15px;
+      flex: 0.5;
+      max-width: 80px;
+    }
+
+    .btn-excluir:hover {
+      background: #b71c1c;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(211, 47, 47, 0.3);
+    }
+
     .loading {
       text-align: center;
       font-size: 1.1rem;
@@ -280,9 +301,17 @@ h3{
 
       .transaction .description,
       .transaction .date,
-      .transaction .value {
+      .transaction .value,
+      .transaction .btn-excluir {
         width: 100%;
         text-align: left;
+        margin-left: 0;
+        max-width: none;
+      }
+
+      .btn-excluir {
+        text-align: center;
+        margin-top: 8px;
       }
 
       h1 {
@@ -393,6 +422,29 @@ h3{
       return agrupado;
     }
 
+    async function excluirDespesa(despesaId) {
+      if (!confirm('Tem certeza que deseja excluir esta despesa?')) {
+        return;
+      }
+
+      try {
+        const db = firebase.firestore();
+        await db.collection("transactions").doc(despesaId).delete();
+        
+        // Remove a despesa das listas locais
+        todasDespesas = todasDespesas.filter(d => d.id !== despesaId);
+        despesasFiltradas = despesasFiltradas.filter(d => d.id !== despesaId);
+        
+        // Re-renderiza a lista
+        aplicarFiltros();
+        
+        alert('Despesa excluída com sucesso!');
+      } catch (error) {
+        console.error('Erro ao excluir despesa:', error);
+        alert('Erro ao excluir despesa. Tente novamente.');
+      }
+    }
+
     function renderizar(despesas) {
       despesasFiltradas = despesas;
       const agrupado = agruparPorMes(despesas);
@@ -430,9 +482,15 @@ h3{
           val.className = "value";
           val.textContent = "R$ " + tx.value.toFixed(2);
 
+          const btnExcluir = document.createElement('button');
+          btnExcluir.className = "btn-excluir";
+          btnExcluir.textContent = "Excluir";
+          btnExcluir.onclick = () => excluirDespesa(tx.id);
+
           divTx.appendChild(desc);
           divTx.appendChild(date);
           divTx.appendChild(val);
+          divTx.appendChild(btnExcluir);
 
           divMes.appendChild(divTx);
         });
