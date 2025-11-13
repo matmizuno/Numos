@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Equipe Numos</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0a0a0a 0%, #141414 100%);
+            min-height: 100vh;
+            padding: 40px 20px;
+        }
+
+        .main {
+            max-width: 800px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .title {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .title h1 {
+            color: #ffffff;
+            font-size: 2.5rem;
+            font-weight: 600;
+            text-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+        }
+
+        .members {
+            width: 100%;
+            max-width: 600px;
+            margin-bottom: 20px;
+        }
+
+        .cardMember {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 30px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cardMember:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(20, 20, 20, 0.5);
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .cardMember h2 {
+            color: #ffffff;
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .links {
+            display: none;
+            gap: 15px;
+            justify-content: center;
+            margin-top: 20px;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .links.active {
+            display: flex;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .linkedin, .github {
+            padding: 12px 25px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: inline-block;
+        }
+
+        .linkedin {
+            background: #0077b5;
+            color: white;
+        }
+
+        .linkedin:hover {
+            background: #005582;
+            transform: scale(1.05);
+        }
+
+        .github {
+            background: #333;
+            color: white;
+        }
+
+        .github:hover {
+            background: #000;
+            transform: scale(1.05);
+        }
+
+        @media (max-width: 768px) {
+            .title h1 {
+                font-size: 2rem;
+            }
+
+            .cardMember {
+                padding: 20px;
+            }
+
+            .cardMember h2 {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="main">
+        <div class="title">
+            <h1>Acompanhe a equipe Numos!</h1>
+        </div>
+
+        <div class="members">
+            <div class="cardMember" onclick="toggleLinks(this)">
+                <h2>Mateus Alves</h2>
+                <div class="links">
+                    <a href="#" class="linkedin">LinkedIn</a>
+                    <a href="#" class="github">GitHub</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="members">
+            <div class="cardMember" onclick="toggleLinks(this)">
+                <h2>Mateus Lima</h2>
+                <div class="links">
+                    <a href="#" class="linkedin">LinkedIn</a>
+                    <a href="#" class="github">GitHub</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="members">
+            <div class="cardMember" onclick="toggleLinks(this)">
+                <h2>Matheus Mizuno</h2>
+                <div class="links">
+                    <a href="https://www.linkedin.com/in/matheus-mizuno/" class="linkedin">LinkedIn</a>
+                    <a href="https://github.com/matMizuno" class="github">GitHub</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="members">
+            <div class="cardMember" onclick="toggleLinks(this)">
+                <h2>João Pedro</h2>
+                <div class="links">
+                    <a href="#" class="linkedin">LinkedIn</a>
+                    <a href="#" class="github">GitHub</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="members">
+            <div class="cardMember" onclick="toggleLinks(this)">
+                <h2>Vitor catânio</h2>
+                <div class="links">
+                    <a href="#" class="linkedin">LinkedIn</a>
+                    <a href="#" class="github">GitHub</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function toggleLinks(card) {
+            const links = card.querySelector('.links');
+            links.classList.toggle('active');
+        }
+    </script>
+</body>
+</html>
