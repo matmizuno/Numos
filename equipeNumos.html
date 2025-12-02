@@ -13,9 +13,25 @@
 
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #0a0a0a 0%, #141414 100%);
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #16213e 100%);
             min-height: 100vh;
             padding: 40px 20px;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 30%, rgba(76, 201, 240, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 70%, rgba(139, 92, 246, 0.1) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: 0;
         }
 
         .main {
@@ -24,42 +40,104 @@
             display: flex;
             flex-direction: column;
             align-items: center;
+            position: relative;
+            z-index: 1;
         }
 
         .title {
             text-align: center;
-            margin-bottom: 50px;
+            margin-bottom: 60px;
+            animation: slideDown 0.8s ease;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         .title h1 {
             color: #ffffff;
-            font-size: 2.5rem;
-            font-weight: 600;
-            text-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+            font-size: 3rem;
+            font-weight: 700;
+            text-shadow: 0 4px 20px rgba(76, 201, 240, 0.3);
+            letter-spacing: -1px;
+            background: linear-gradient(135deg, #4cc9f0 0%, #8b5cf6 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
 
         .members {
             width: 100%;
             max-width: 600px;
             margin-bottom: 20px;
+            animation: fadeInUp 0.6s ease backwards;
+        }
+
+        .members:nth-child(2) { animation-delay: 0.1s; }
+        .members:nth-child(3) { animation-delay: 0.2s; }
+        .members:nth-child(4) { animation-delay: 0.3s; }
+        .members:nth-child(5) { animation-delay: 0.4s; }
+        .members:nth-child(6) { animation-delay: 0.5s; }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         .cardMember {
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(10px);
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(20px);
             border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 15px;
+            border-radius: 20px;
             padding: 30px;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             position: relative;
             overflow: hidden;
         }
 
+        .cardMember::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(76, 201, 240, 0.1), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .cardMember:hover::before {
+            left: 100%;
+        }
+
         .cardMember:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 30px rgba(20, 20, 20, 0.5);
-            border-color: rgba(255, 255, 255, 0.2);
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 
+                0 20px 40px rgba(0, 0, 0, 0.4),
+                0 0 30px rgba(76, 201, 240, 0.2);
+            border-color: rgba(76, 201, 240, 0.4);
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .cardMember.active {
+            border-color: rgba(76, 201, 240, 0.6);
+            box-shadow: 
+                0 10px 30px rgba(0, 0, 0, 0.3),
+                0 0 40px rgba(76, 201, 240, 0.3);
         }
 
         .cardMember h2 {
@@ -67,6 +145,10 @@
             font-size: 1.8rem;
             margin-bottom: 20px;
             text-align: center;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            position: relative;
+            z-index: 1;
         }
 
         .links {
@@ -74,7 +156,9 @@
             gap: 15px;
             justify-content: center;
             margin-top: 20px;
-            animation: fadeIn 0.3s ease;
+            animation: fadeIn 0.4s ease;
+            position: relative;
+            z-index: 1;
         }
 
         .links.active {
@@ -93,45 +177,79 @@
         }
 
         .linkedin, .github {
-            padding: 12px 25px;
-            border-radius: 8px;
+            padding: 14px 30px;
+            border-radius: 12px;
             text-decoration: none;
             font-weight: 600;
-            transition: all 0.3s ease;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             display: inline-block;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .linkedin::before,
+        .github::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            transform: translate(-50%, -50%);
+            transition: width 0.5s, height 0.5s;
+        }
+
+        .linkedin:hover::before,
+        .github:hover::before {
+            width: 300px;
+            height: 300px;
         }
 
         .linkedin {
-            background: #0077b5;
+            background: linear-gradient(135deg, #0077b5 0%, #005582 100%);
             color: white;
+            position: relative;
         }
 
         .linkedin:hover {
-            background: #005582;
-            transform: scale(1.05);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0, 119, 181, 0.4);
         }
 
         .github {
-            background: #333;
+            background: linear-gradient(135deg, #333 0%, #000 100%);
             color: white;
+            position: relative;
         }
 
         .github:hover {
-            background: #000;
-            transform: scale(1.05);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.6);
         }
 
         @media (max-width: 768px) {
             .title h1 {
-                font-size: 2rem;
+                font-size: 2.2rem;
             }
 
             .cardMember {
-                padding: 20px;
+                padding: 25px 20px;
             }
 
             .cardMember h2 {
                 font-size: 1.5rem;
+            }
+
+            .links {
+                flex-direction: column;
+            }
+
+            .linkedin, .github {
+                width: 100%;
+                text-align: center;
             }
         }
     </style>
@@ -146,8 +264,8 @@
             <div class="cardMember" onclick="toggleLinks(this)">
                 <h2>Mateus Alves</h2>
                 <div class="links">
-                    <a href="https://www.linkedin.com/in/mateus-alves-borges-880396251?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app" class="linkedin">LinkedIn</a>
-                    <a href="https://github.com/TheMathh" class="github">GitHub</a>
+                    <a href="https://www.linkedin.com/in/mateus-alves-borges-880396251?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app" class="linkedin" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+                    <a href="https://github.com/TheMathh" class="github" target="_blank" rel="noopener noreferrer">GitHub</a>
                 </div>
             </div>
         </div>
@@ -156,8 +274,8 @@
             <div class="cardMember" onclick="toggleLinks(this)">
                 <h2>Mateus Lima</h2>
                 <div class="links">
-                    <a href="https://www.linkedin.com/in/mateus-lima0" class="linkedin">LinkedIn</a>
-                    <a href="https://github.com/mateuslima0" class="github">GitHub</a>
+                    <a href="https://www.linkedin.com/in/mateus-lima0" class="linkedin" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+                    <a href="https://github.com/mateuslima0" class="github" target="_blank" rel="noopener noreferrer">GitHub</a>
                 </div>
             </div>
         </div>
@@ -166,8 +284,8 @@
             <div class="cardMember" onclick="toggleLinks(this)">
                 <h2>Matheus Mizuno</h2>
                 <div class="links">
-                    <a href="https://www.linkedin.com/in/matheus-mizuno/" class="linkedin">LinkedIn</a>
-                    <a href="https://github.com/matMizuno" class="github">GitHub</a>
+                    <a href="https://www.linkedin.com/in/matheus-mizuno/" class="linkedin" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+                    <a href="https://github.com/matMizuno" class="github" target="_blank" rel="noopener noreferrer">GitHub</a>
                 </div>
             </div>
         </div>
@@ -176,19 +294,18 @@
             <div class="cardMember" onclick="toggleLinks(this)">
                 <h2>João Pedro</h2>
                 <div class="links">
-                    <a href="https://br.linkedin.com/in/joao-pedro-ferreira-299a1b338" class="linkedin">LinkedIn</a>
-                    <a href="https://github.com/srfreeza"class"github">GitHUb</a>
-                  
+                    <a href="https://br.linkedin.com/in/joao-pedro-ferreira-299a1b338" class="linkedin" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+                    <a href="https://github.com/srfreeza" class="github" target="_blank" rel="noopener noreferrer">GitHub</a>
                 </div>
             </div>
         </div>
 
         <div class="members">
             <div class="cardMember" onclick="toggleLinks(this)">
-                <h2>Vitor catânio</h2>
+                <h2>Vitor Catânio</h2>
                 <div class="links">
-                    <a href="https://www.linkedin.com/in/vitorcatanio/" class="linkedin">LinkedIn</a>
-                    <a href="https://github.com/Kattanio" class="github">GitHub</a>
+                    <a href="https://www.linkedin.com/in/vitorcatanio/" class="linkedin" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+                    <a href="https://github.com/Kattanio" class="github" target="_blank" rel="noopener noreferrer">GitHub</a>
                 </div>
             </div>
         </div>
@@ -196,8 +313,20 @@
 
     <script>
         function toggleLinks(card) {
+            // Fecha todos os outros cards abertos
+            const allCards = document.querySelectorAll('.cardMember');
+            allCards.forEach(otherCard => {
+                if (otherCard !== card) {
+                    const otherLinks = otherCard.querySelector('.links');
+                    otherLinks.classList.remove('active');
+                    otherCard.classList.remove('active');
+                }
+            });
+
+            // Toggle do card clicado
             const links = card.querySelector('.links');
             links.classList.toggle('active');
+            card.classList.toggle('active');
         }
     </script>
 </body>
